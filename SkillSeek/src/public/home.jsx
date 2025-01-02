@@ -16,8 +16,13 @@ const HomePage = () => {
             <a href="#" className="text-gray-700 hover:text-[#1F4A9B] transition">Others</a>
           </nav>
           <div className="flex space-x-4">
-            <button className="bg-[#1F4A9B] text-white px-4 py-2 rounded shadow hover:bg-blue-700 transition">Sign In</button>
-            <button className="bg-gray-100 text-[#1F4A9B] px-4 py-2 rounded shadow hover:bg-gray-200 transition">Sign Up</button>
+          <button className="px-7 py-2 bg-[#1F4A9B] text-white font-bold shadow-lg shadow-[#1F4A9B] rounded-full transition-transform transform-gpu hover:bg-blue-300 hover:shadow-lg">
+  Sign In
+</button>
+
+<button className="px-7 py-2 bg-[#1F4A9B] text-white font-bold shadow-lg shadow-[#1F4A9B] rounded-full transition-transform transform-gpu hover:bg-blue-300 hover:shadow-lg">
+  Sign Up           
+</button>
           </div>
         </div>
       </header>
