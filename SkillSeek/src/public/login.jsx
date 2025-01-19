@@ -8,8 +8,8 @@ const SignUp = () => {
         <div className="bg-white shadow-xl rounded-lg flex overflow-hidden">
           {/* Left Section - Illustration */}
           <div className="w-1/2 flex items-center justify-center bg-[#1FFFFFF] p-8">
-          <div className="w-80 h-80 bg-white rounded-full shadow-md shadow-[#1F4A9B] flex items-center justify-center">
-          <img
+          <div className="w-80 h-80 bg-white rounded-full shadow-lg shadow-[#1F4A9B] flex items-center justify-center">
+              <img
                 src="https://i.pinimg.com/736x/40/f5/51/40f551f1cb4ed3d8a3116c52a81e7552.jpg"
                 alt="Workers illustration"
                 className="w-72 h-72 object-contain rounded-full"
@@ -19,14 +19,14 @@ const SignUp = () => {
 
           {/* Right Section - Form */}
           <div className="w-1/2 p-8 space-y-4">
-            <h2 className="text-2xl font-bold text-[#1F4A9B] text-center"></h2>
+            <h2 className="text-2xl font-bold text-[#1F4A9B] text-center">Sign Up</h2>
             <form className="space-y-4">
               {/* Full Name */}
               <div>
                 <input
                   type="text"
                   placeholder="Full Name"
-                  className="w-full px-4 py-2 border-2 border-gray-400 rounded-md  focus:ring-[#1F4A9B]"
+                  className="w-full px-4 py-2 border-2 border-gray-300 rounded-md shadow-sm shadow-black focus:outline-none focus:ring-2 focus:ring-[#1F4A9B]"
                 />
               </div>
 
@@ -35,7 +35,7 @@ const SignUp = () => {
                 <input
                   type="email"
                   placeholder="Email"
-                  className="w-full px-4 py-2 border-2 border-gray-400 rounded-md  focus:ring-[#1F4A9B]"
+                  className="w-full px-4 py-2 border-2 border-gray-300 rounded-md shadow-sm shadow-black focus:outline-none focus:ring-2 focus:ring-[#1F4A9B]"
                 />
               </div>
 
@@ -44,7 +44,7 @@ const SignUp = () => {
                 <input
                   type="tel"
                   placeholder="Phone Number"
-                  className="w-full px-4 py-2 border-2 border-gray-400 rounded-md focus:ring-[#1F4A9B]"
+                  className="w-full px-4 py-2 border-2 border-gray-300 rounded-md shadow-sm shadow-black focus:outline-none focus:ring-2 focus:ring-[#1F4A9B]"
                 />
               </div>
 
@@ -53,7 +53,7 @@ const SignUp = () => {
                 <input
                   type="text"
                   placeholder="Address"
-                  className="w-full px-4 py-2 border-2 border-gray-400 rounded-md focus:ring-[#1F4A9B]"
+                  className="w-full px-4 py-2 border-2 border-gray-300 rounded-md shadow-sm shadow-black focus:outline-none focus:ring-2 focus:ring-[#1F4A9B]"
                 />
               </div>
 
@@ -62,7 +62,7 @@ const SignUp = () => {
                 <input
                   type="password"
                   placeholder="Password"
-                  className="w-full px-4 py-2 border-2 border-gray-400 rounded-md  focus:ring-2 focus:ring-[#1F4A9B]"
+                  className="w-full px-4 py-2 border-2 border-gray-300 rounded-md shadow-sm shadow-black focus:outline-none focus:ring-2 focus:ring-[#1F4A9B]"
                 />
               </div>
 
@@ -71,14 +71,14 @@ const SignUp = () => {
                 <input
                   type="password"
                   placeholder="Confirm Password"
-                  className="w-full px-4 py-2 border-2 border-gray-400 rounded-md  focus:ring-[#1F4A9B]"
+                  className="w-full px-4 py-2 border-2 border-gray-300 rounded-md shadow-sm shadow-black focus:outline-none focus:ring-2 focus:ring-[#1F4A9B]"
                 />
               </div>
 
               {/* Sign Up Button */}
               <button
                 type="submit"
-                className="w-full bg-[#1F4A9B] text-white py-2 rounded-md  hover:bg-blue-700 transition duration-200"
+                className="w-full bg-[#1F4A9B] text-white py-2 rounded-md shadow shadow-black hover:bg-blue-700 transition duration-200"
               >
                 Sign Up
               </button>

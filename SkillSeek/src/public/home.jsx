@@ -6,69 +6,100 @@ const HomePage = () => {
 <div className="min-h-screen bg-gray-50 flex flex-col mx-auto">
 
       {/* Navbar */}
-      <header className="bg-white shadow-md py-4">
-        <div className="container mx-auto px-4 flex justify-between items-center">
-          <img src="/src/assets/image/skillseeklogo.png" className="h-20" />
-          <nav className="flex space-x-6">
-            <a href="#" className="text-gray-700 hover:text-[#1F4A9B] transition">Home</a>
-            <a href="#" className="text-gray-700 hover:text-[#1F4A9B] transition">Services</a>
-            <a href="#" className="text-gray-700 hover:text-[#1F4A9B] transition">Help</a>
-            <a href="#" className="text-gray-700 hover:text-[#1F4A9B] transition">Others</a>
-          </nav>
-          <div className="flex space-x-4">
-          <button className="px-7 py-2 bg-[#1F4A9B] text-white font-bold shadow-lg shadow-[#1F4A9B] rounded-full transition-transform transform-gpu hover:bg-blue-300 hover:shadow-lg">
-  Sign In
-</button>
-
-<button className="px-7 py-2 bg-[#1F4A9B] text-white font-bold shadow-lg shadow-[#1F4A9B] rounded-full transition-transform transform-gpu hover:bg-blue-300 hover:shadow-lg">
-  Sign Up           
-</button>
-          </div>
-        </div>
-      </header>
+      <header className="bg-[#ecf4fb] shadow-md py-4">
+  <div className="container mx-auto px-4 flex justify-between items-center">
+    <img src="/src/assets/image/skillseeklogo.png" className="h-20" />
+    <nav className="flex space-x-8">
+      <a href="#" className="text-gray-700 font-semibold text-lg hover:text-[#1F4A9B] transition-colors duration-300 ease-in-out">Home</a>
+      <a href="#" className="text-gray-700 font-semibold text-lg hover:text-[#1F4A9B] transition-colors duration-300 ease-in-out">Services</a>
+      <a href="#" className="text-gray-700 font-semibold text-lg hover:text-[#1F4A9B] transition-colors duration-300 ease-in-out">Help</a>
+      <a href="#" className="text-gray-700 font-semibold text-lg hover:text-[#1F4A9B] transition-colors duration-300 ease-in-out">Others</a>
+    </nav>
+    <div className="flex space-x-4">
+      <button className="px-7 py-3 bg-[#1F4A9B] text-white font-bold rounded-full shadow-md hover:bg-[#155e8a] transition-all duration-300 ease-in-out transform hover:scale-105">
+        Sign In
+      </button>
+      <button className="px-7 py-3 bg-[#1F4A9B] text-white font-bold rounded-full shadow-md hover:bg-[#155e8a] transition-all duration-300 ease-in-out transform hover:scale-105">
+        Sign Up
+      </button>
+    </div>
+  </div>
+</header>
 
      
 {/* Hero Section */}
-<section className="bg-gray-50 py-16">
+<section className="bg-[#ecf4fb]  py-16">
   <div className="container mx-auto px-20 text-left">
     <div className="flex items-center justify-between">
       <div className="text-left">
-        <h1 className="text-4xl font-bold text-[#1F4A9B] mb-4">SkillSeek</h1>
-        <p className="text-[#1F4A9B] text-lg mb-6">Your trusted platform for convenient, reliable, and hassle-free services with professionals!</p>
-        <button className="px-8 py-4 bg-gradient-to-r from-[#1F4A9B] to-blue-500 text-white font-bold shadow-lg shadow-[#1F4A9B] rounded-full transition-transform transform-gpu hover:-translate-y-1 hover:shadow-lg">
+        <h1 className="text-7xl font-bold text-[#1F4A9B] mb-4">SkillSeek</h1>
+        <p className=" text-4xl  text-[#1F4A9B] mb-9 font-semibold">
+
+
+
+  <span className="block">Your trusted platform for convenient, reliable,</span>
+  <span className="block">and hassle-free services with professionals!</span>
+</p>
+
+        <button className="px-8 py-4 bg-gradient-to-r from-[#1F4A9B] to-[#155e8a] text-white  rounded-full font-bold shadow-lg shadow-[#1F4A9B] hover:-translate-y-1 hover:shadow-lg">
           Book the Service
         </button>
       </div>
-      <div className="w-80 h-80 bg-white rounded-full shadow-lg shadow-[#1F4A9B] flex items-center justify-center ml-auto">
+      <div className="ml-auto justify-center" style={{ width: '22rem', height: '22rem' }}>
+
         <img
-          src="https://i.pinimg.com/736x/40/f5/51/40f551f1cb4ed3d8a3116c52a81e7552.jpg"
+          src="src\assets\image\Premium_Vector___Technician__builders__engineers_and_mechanics-removebg-preview.png"
           alt="Workers illustration"
-          className="w-72 h-72 object-contain rounded-full"
+          
         />
       </div>
     </div>
   </div>
 </section>
+{/*service*/}
+<section className="bg-[#ecf4fb]  py-20">
+  <div className="container mx-auto px-8 text-center">
+    <h2 className="text-2xl font-bold text-gray-700 mb-6">Find Services</h2>
 
-      {/* Services Section */}
-      <section className="bg-white py-12">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-2xl font-bold text-gray-700 mb-6">Find Services</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {['Plumber', 'Painter', 'Carpenter', 'Cook'].map((service) => (
-              <div
-                key={service}
-                className="bg-gray-100 rounded-lg shadow-lg p-6 text-center hover:shadow-xl transition"
-              >
-                <div className="bg-[#1F4A9B] text-white w-16 h-16 rounded-full mx-auto flex items-center justify-center mb-4">
-                  <span className="text-lg font-bold">{service[0]}</span>
-                </div>
-                <h3 className="text-gray-700 font-semibold">{service}</h3>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+    {/* Services Section */}
+    <div className="grid grid-cols-1 md:grid-cols-2 text-white lg:grid-cols-4 gap-6">
+      {[
+        { name: "Plumber", image: "src/assets/image/Plumber with tools repairing a pipe.png" },
+        { name: "Painter", image: "src/assets/image/The painter paints the wall.png" },
+        { name: "Carpenter", image: "src/assets/image/Working with a chainsaw.png" },
+        { name: "Cook", image: "src/assets/image/Cook making a halloween dinner.png" }
+      ].map((service) => (
+        <button
+          key={service.name}
+          className="flex flex-col items-center space-y-2 rounded-lg shadow-lg p-4 text-center transition-transform transform rounded-full hover:scale-105 hover:shadow-xl bg-[#1F4A9B]"
+
+        >
+          {/* Image Container */}
+         
+            <img 
+              src={service.image} 
+              alt={`${service.name} icon`} 
+              className="w-20 h-20 bg-[#1F4A9B] object-contain"
+            />
+          
+          {/* Text */}
+          <h3 className="text-gray-700 font-semibold text-lg mt-2">{service.name}</h3>
+        </button>
+      ))}
+    </div>
+
+    {/* Info and Button */}
+    <p className="text-gray-600 mt-6 text-lg">
+      Earn with your skills like Plumber, Carpenter, Painter, Cook, and others.
+    </p>
+    <button className="mt-4 px-8 py-3 bg-blue-700 text-white font-bold shadow-md rounded-full transition-transform transform hover:bg-blue-800 hover:scale-105 hover:shadow-lg">
+      Be a Service Provider
+    </button>
+  </div>
+</section>
+
+
+
 
       {/* Testimonials Section */}
       <section className="bg-gray-50 py-12">
