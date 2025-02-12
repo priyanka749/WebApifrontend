@@ -1,101 +1,141 @@
-import React from "react";
-import "../index.css";
+import React, { useState } from "react";
+import logo from "../assets/image/skillseeklogo.png"; // Adjust path if necessary
 
-const SignUp = () => {
+const Signup = () => {
+  const [role, setRole] = useState("Customer");
+
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-      <div className="container mx-auto px-4 w-full max-w-4xl">
-        <div className="bg-white shadow-xl rounded-lg flex overflow-hidden">
-          {/* Left Section - Illustration */}
-          <div className="w-1/2 flex items-center justify-center bg-[#1FFFFFF] p-8">
-          <div className="w-80 h-80 bg-white rounded-full shadow-md shadow-[#1F4A9B] flex items-center justify-center">
-          <img
-                src="https://i.pinimg.com/736x/40/f5/51/40f551f1cb4ed3d8a3116c52a81e7552.jpg"
-                alt="Workers illustration"
-                className="w-72 h-72 object-contain rounded-full"
-              />
-            </div>
-          </div>
-
-          {/* Right Section - Form */}
-          <div className="w-1/2 p-8 space-y-4">
-            <h2 className="text-2xl font-bold text-[#1F4A9B] text-center"></h2>
-            <form className="space-y-4">
-              {/* Full Name */}
-              <div>
-                <input
-                  type="text"
-                  placeholder="Full Name"
-                  className="w-full px-4 py-2 border-2 border-gray-400 rounded-md  focus:ring-[#1F4A9B]"
-                />
-              </div>
-
-              {/* Email */}
-              <div>
-                <input
-                  type="email"
-                  placeholder="Email"
-                  className="w-full px-4 py-2 border-2 border-gray-400 rounded-md  focus:ring-[#1F4A9B]"
-                />
-              </div>
-
-              {/* Phone Number */}
-              <div>
-                <input
-                  type="tel"
-                  placeholder="Phone Number"
-                  className="w-full px-4 py-2 border-2 border-gray-400 rounded-md focus:ring-[#1F4A9B]"
-                />
-              </div>
-
-              {/* Address */}
-              <div>
-                <input
-                  type="text"
-                  placeholder="Address"
-                  className="w-full px-4 py-2 border-2 border-gray-400 rounded-md focus:ring-[#1F4A9B]"
-                />
-              </div>
-
-              {/* Password */}
-              <div>
-                <input
-                  type="password"
-                  placeholder="Password"
-                  className="w-full px-4 py-2 border-2 border-gray-400 rounded-md  focus:ring-2 focus:ring-[#1F4A9B]"
-                />
-              </div>
-
-              {/* Confirm Password */}
-              <div>
-                <input
-                  type="password"
-                  placeholder="Confirm Password"
-                  className="w-full px-4 py-2 border-2 border-gray-400 rounded-md  focus:ring-[#1F4A9B]"
-                />
-              </div>
-
-              {/* Sign Up Button */}
-              <button
-                type="submit"
-                className="w-full bg-[#1F4A9B] text-white py-2 rounded-md  hover:bg-blue-700 transition duration-200"
-              >
-                Sign Up
-              </button>
-            </form>
-
-            {/* Sign In Link */}
-            <p className="text-center text-sm mt-4">
-              Already have an account?{' '}
-              <a href="#" className="text-[#1F4A9B] hover:underline">
-                Sign In
-              </a>
-            </p>
-          </div>
+    <div className="flex items-center py-8 py-30 justify-center min-h-screen bg-gradient-to-br from-blue-50 to-gray-100">
+      <div className="w-full max-w-5xl p-10 bg-white shadow-4xl rounded-3xl border-2 border-blue-100">
+        {/* Logo */}
+        <div className="flex justify-center  ">
+          <img src={logo} alt="SkillSeek Logo" className="w-32" />
         </div>
+
+        <h2 className="text-4xl font-extrabold text-center text-[#1F4A9B] mb-7">
+          Create an Account
+        </h2>
+
+        {/* Role Selection Slider */}
+        <div className="flex items-center justify-between bg-gray-200 rounded-full p-1 mb-10 shadow-inner">
+          <button
+            onClick={() => setRole("Customer")}
+            className={`w-1/2 py-3 font-semibold text-center rounded-full transition-all ${
+              role === "Customer"
+                ? "bg-[#1F4A9B] text-white shadow-lg"
+                : "text-gray-700 hover:bg-gray-300"
+            }`}
+          >
+            Customer
+          </button>
+          <button
+            onClick={() => setRole("Service Provider")}
+            className={`w-1/2 py-3 font-semibold text-center rounded-full transition-all ${
+              role === "Service Provider"
+                ? "bg-[#1F4A9B] text-white shadow-lg"
+                : "text-gray-700 hover:bg-gray-300"
+            }`}
+          >
+            Service Provider
+          </button>
+        </div>
+
+        {/* Form Fields */}
+        <form className="space-y-6">
+          {/* Common Fields */}
+          <div className="space-y-1">
+            <label className="block text-sm font-medium text-gray-700">
+              Full Name
+            </label>
+            <input
+              type="text"
+              placeholder="Enter your full name"
+              className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1F4A9B] placeholder-gray-400 shadow-sm"
+            />
+          </div>
+
+          <div className="space-y-1">
+            <label className="block text-sm font-medium text-gray-700">
+              Email
+            </label>
+            <input
+              type="email"
+              placeholder="Enter your email"
+              className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1F4A9B] placeholder-gray-400 shadow-sm"
+            />
+          </div>
+
+          <div className="space-y-1">
+            <label className="block text-sm font-medium text-gray-700">
+              Phone Number
+            </label>
+            <input
+              type="text"
+              placeholder="98XXXXXXXX"
+              className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1F4A9B] placeholder-gray-400 shadow-sm"
+            />
+          </div>
+
+          <div className="space-y-1">
+            <label className="block text-sm font-medium text-gray-700">
+              Password
+            </label>
+            <input
+              type="password"
+              placeholder="Enter your password"
+              className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1F4A9B] placeholder-gray-400 shadow-sm"
+            />
+          </div>
+
+          {/* Role-specific Fields */}
+          {role === "Service Provider" && (
+            <>
+              <div className="space-y-1">
+                <label className="block text-sm font-medium text-gray-700">
+                  Role
+                </label>
+                <input
+                  type="text"
+                  placeholder="Your role (e.g., Plumber, Electrician)"
+                  className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1F4A9B] placeholder-gray-400 shadow-sm"
+                />
+              </div>
+
+              <div className="space-y-1">
+                <label className="block text-sm font-medium text-gray-700">
+                  Skills
+                </label>
+                <input
+                  type="text"
+                  placeholder="Enter your skills (comma-separated)"
+                  className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1F4A9B] placeholder-gray-400 shadow-sm"
+                />
+              </div>
+
+              <div className="space-y-1">
+                <label className="block text-sm font-medium text-gray-700">
+                  Bio
+                </label>
+                <textarea
+                  placeholder="Tell us about yourself"
+                  className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1F4A9B] placeholder-gray-400 shadow-sm"
+                  rows="4"
+                ></textarea>
+              </div>
+            </>
+          )}
+
+          {/* Submit Button */}
+          <button
+            type="submit"
+            className="w-full py-4 text-lg font-bold text-white bg-[#1F4A9B] rounded-lg hover:bg-[#163870] transition-all shadow-lg"
+          >
+            Sign Up as {role}
+          </button>
+        </form>
       </div>
     </div>
   );
 };
 
-export default SignUp;
+export default Signup;
