@@ -1,110 +1,169 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "../index.css";
 
 const HomePage = () => {
+
+
+ 
+  const [showNavbar, setShowNavbar] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > lastScrollY) {
+        setShowNavbar(false);
+      } else {
+        setShowNavbar(true);
+      }
+      setLastScrollY(window.scrollY);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [lastScrollY]);
+
   return (
-<div className="min-h-screen bg-gray-50 flex flex-col mx-auto">
-
+    <div className="min-h-screen bg-gray-50 flex flex-col mx-auto">
       {/* Navbar */}
-      <header className="bg-[#ecf4fb] shadow-md py-4">
-  <div className="container mx-auto px-4 flex justify-between items-center">
-    <img src="/src/assets/image/skillseeklogo.png" className="h-20" />
-    <nav className="flex space-x-8">
-      <a href="#" className="text-gray-700 font-semibold text-lg hover:text-[#1F4A9B] transition-colors duration-300 ease-in-out">Home</a>
-      <a href="#" className="text-gray-700 font-semibold text-lg hover:text-[#1F4A9B] transition-colors duration-300 ease-in-out">Services</a>
-      <a href="#" className="text-gray-700 font-semibold text-lg hover:text-[#1F4A9B] transition-colors duration-300 ease-in-out">Help</a>
-      <a href="#" className="text-gray-700 font-semibold text-lg hover:text-[#1F4A9B] transition-colors duration-300 ease-in-out">Others</a>
-    </nav>
-    <div className="flex space-x-4">
-      <button className="px-7 py-3 bg-[#1F4A9B] text-white font-bold rounded-full shadow-md hover:bg-[#155e8a] transition-all duration-300 ease-in-out transform hover:scale-105">
-        Sign In
-      </button>
-      <button className="px-7 py-3 bg-[#1F4A9B] text-white font-bold rounded-full shadow-md hover:bg-[#155e8a] transition-all duration-300 ease-in-out transform hover:scale-105">
-        Sign Up
-      </button>
-    </div>
-  </div>
-</header>
+      <header className={`shadow-lg py-4 sticky top-0 z-50 bg-white transition-transform duration-300 ${showNavbar ? "translate-y-0" : "-translate-y-full"}`}>
+        <div className="container mx-auto px-4 md:px-6 flex items-center justify-between">
+          <div className="flex items-center space-x-4">
+            <img src="src/assets/image/skillseeklogo.png" className="h-16" alt="SkillSeek Logo" />
+          </div>
+          <nav className="hidden md:flex space-x-6">
+            {["Home", "Services", "Help", "Others"].map((item) => (
+              <a
+                key={item}
+                href="#"
+                className="text-[#1F4A9B] text-lg font-medium hover:text-gray-500 transition duration-300 ease-in-out"
+              >
+                {item}
+              </a>
+            ))}
+          </nav>
+          <div className="hidden md:flex space-x-4 items-center">
+            <button className="px-4 py-2 bg-[#1F4A9B] text-white font-bold rounded-full shadow-md hover:bg-[#104e71] transition-all duration-300 ease-in-out transform hover:scale-105">
+              Sign In
+            </button>
+            <button className="px-4 py-2 bg-[#1F4A9B] text-white font-bold rounded-full shadow-md hover:bg-[#104e71] transition-all duration-300 ease-in-out transform hover:scale-105">
+              Sign Up
+            </button>
+          </div>
+          <button className="md:hidden text-[#1F4A9B] text-3xl focus:outline-none" onClick={() => setMenuOpen(!menuOpen)}>
+            ☰
+          </button>
+        </div>
+        {menuOpen && (
+          <div className="absolute top-16 left-0 w-full bg-white shadow-lg z-50">
+            <nav className="flex flex-col space-y-4 p-4">
+              {["Home", "Services", "Help", "Others"].map((item) => (
+                <a
+                  key={item}
+                  href="#"
+                  className="text-[#1F4A9B] text-lg font-medium hover:text-gray-500 transition duration-300 ease-in-out"
+                >
+                  {item}
+                </a>
+              ))}
+            </nav>
+            <div className="flex flex-col space-y-4 p-4">
+              <button className="px-4 py-2 bg-[#1F4A9B] text-white font-bold rounded-full shadow-md hover:bg-[#104e71] transition-all duration-300 ease-in-out transform hover:scale-105">
+                Sign In
+              </button>
+              <button className="px-4 py-2 bg-[#1F4A9B] text-white font-bold rounded-full shadow-md hover:bg-[#104e71] transition-all duration-300 ease-in-out transform hover:scale-105">
+                Sign Up
+              </button>
+            </div>
+          </div>
+        )}
+      </header>
 
-     
-{/* Hero Section */}
-<section className="bg-[#ecf4fb]  py-16">
-  <div className="container mx-auto px-20 text-left">
-    <div className="flex items-center justify-between">
-      <div className="text-left">
-        <h1 className="text-7xl font-bold text-[#1F4A9B] mb-4">SkillSeek</h1>
-        <p className=" text-4xl  text-[#1F4A9B] mb-9 font-semibold">
+      {/* Hero Section */}
+      <section className="py-12">
+        <div className="container mx-auto px-4 md:px-16 lg:px-20 text-left">
+          <div className="flex flex-col lg:flex-row items-center justify-between">
+            <div className="lg:w-1/2">
+              <h1 className="text-4xl md:text-6xl font-bold text-[#1F4A9B] mb-4">SkillSeek</h1>
+              <p className="text-xl md:text-3xl text-[#1F4A9B] mb-9 font-semibold">
+                <span className="block">Your trusted platform for convenient, reliable,</span>
+                <span className="block">and hassle-free services with professionals!</span>
+              </p>
+              <button className="px-8 py-3 bg-[#1F4A9B] text-white rounded-full font-bold shadow-lg hover:-translate-y-1 hover:shadow-xl transition-transform">
+                Book the Service
+              </button>
+            </div>
+            <div className="lg:w-1/2 mt-8 lg:mt-0 flex justify-center lg:justify-end">
+              <img
+                src="src/assets/image/Premium_Vector___Technician__builders__engineers_and_mechanics-removebg-preview.png"
+                alt="Workers illustration"
+                className="w-[20rem] h-[20rem] md:w-[28rem] md:h-[28rem] object-contain"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
 
-
-
-  <span className="block">Your trusted platform for convenient, reliable,</span>
-  <span className="block">and hassle-free services with professionals!</span>
-</p>
-
-        <button className="px-8 py-4 bg-gradient-to-r from-[#1F4A9B] to-[#155e8a] text-white  rounded-full font-bold shadow-lg shadow-[#1F4A9B] hover:-translate-y-1 hover:shadow-lg">
-          Book the Service
-        </button>
-      </div>
-      <div className="ml-auto justify-center" style={{ width: '22rem', height: '22rem' }}>
-
-        <img
-          src="src\assets\image\Premium_Vector___Technician__builders__engineers_and_mechanics-removebg-preview.png"
-          alt="Workers illustration"
-          
-        />
-      </div>
-    </div>
-  </div>
-</section>
-{/*service*/}
-<section className="bg-[#ecf4fb]  py-20">
-  <div className="container mx-auto px-8 text-center">
-    <h2 className="text-2xl font-bold text-gray-700 mb-6">Find Services</h2>
-
-    {/* Services Section */}
-    <div className="grid grid-cols-1 md:grid-cols-2 text-white lg:grid-cols-4 gap-6">
-      {[
-        { name: "Plumber", image: "src/assets/image/Plumber with tools repairing a pipe.png" },
-        { name: "Painter", image: "src/assets/image/The painter paints the wall.png" },
-        { name: "Carpenter", image: "src/assets/image/Working with a chainsaw.png" },
-        { name: "Cook", image: "src/assets/image/Cook making a halloween dinner.png" }
-      ].map((service) => (
-        <button
+   
+     {/* Services Section */}
+<section className="py-12">
+  <div className="container mx-auto px-4 md:px-12 lg:px-16 text-center">
+    <h2 className="text-2xl md:text-3xl font-bold text-[#1F4A9B] mb-8">Find Services</h2>
+    
+    {/* Services Grid */}
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">      {[
+        { name: "Plumber", image: "src/assets/image/om54m6zx.bmp", rating: 4.5, description: "Expert plumbing services for your home and office." },
+        { name: "Painter", image: "src/assets/image/wagke2a5.bmp", rating: 4.7, description: "High-quality painting services for a fresh look." },
+        { name: "Carpenter", image: "src/assets/image/2xizyjeo.bmp", rating: 4.8, description: "Custom woodwork and carpentry solutions." },
+        { name: "Cook", image: "src/assets/image/4p8r98ea.bmp", rating: 4.6, description: "Professional cooking services for events and daily needs." },
+        { name: "Electrician", image: "src/assets/image/2jfm1job.bmp", rating: 4.9, description: "Reliable electrical services for all your needs." },
+        { name: "Cleaner", image: "src/assets/image/mymaxb2f.bmp", rating: 4.8, description: "Top-notch cleaning services for homes and offices." },
+        { name: "Driver", image: "src/assets/image/7yx2yawu.bmp", rating: 4.8, description: "Professional driving services for all your needs." }
+      ].map((service, index) => (
+        <div
           key={service.name}
-          className="flex flex-col items-center space-y-2 rounded-lg shadow-lg p-4 text-center transition-transform transform rounded-full hover:scale-105 hover:shadow-xl bg-[#1F4A9B]"
-
-        >
-          {/* Image Container */}
-         
+          className={`flex flex-col items-center p-4 md:p-6 bg-white rounded-lg shadow-lg transition-transform transform hover:scale-105 hover:shadow-2xl ${index >= 4 ? "hidden more-services" : ""}`}        >
+          <div className="bg-[#1F4A9B] w-40 h-40 md:w-52 md:h-52 rounded-lg overflow-hidden flex items-center justify-center mb-4">
             <img 
               src={service.image} 
               alt={`${service.name} icon`} 
-              className="w-20 h-20 bg-[#1F4A9B] object-contain"
+              className="w-full h-full object-cover"
             />
-          
-          {/* Text */}
-          <h3 className="text-gray-700 font-semibold text-lg mt-2">{service.name}</h3>
-        </button>
+          </div>
+          <h3 className="text-lg md:text-xl font-bold text-gray-800 mb-2">{service.name}</h3>
+          <p className="text-gray-600 mb-4 text-sm md:text-base">{service.description}</p>
+          <div className="flex items-center space-x-1 mb-2">
+            <span className="text-yellow-500 text-lg">★</span>
+            <span className="text-gray-800 font-semibold">{service.rating}</span>
+          </div>
+          <button className="px-4 py-2 bg-[#1F4A9B] text-white rounded-full font-medium transition-transform transform hover:scale-105">
+            
+            View More
+          </button>
+        </div>
       ))}
     </div>
 
-    {/* Info and Button */}
-    <p className="text-gray-600 mt-6 text-lg">
-      Earn with your skills like Plumber, Carpenter, Painter, Cook, and others.
-    </p>
-    <button className="mt-4 px-8 py-3 bg-blue-700 text-white font-bold shadow-md rounded-full transition-transform transform hover:bg-blue-800 hover:scale-105 hover:shadow-lg">
-      Be a Service Provider
-    </button>
+    {/* See More Button */}
+    <div className="mt-6">
+      <button 
+        id="seeMoreBtn" 
+        className="px-6 py-3 bg-[#1F4A9B] text-white rounded-full font-bold shadow-lg hover:-translate-y-1 hover:shadow-xl transition-transform"
+        onClick={() => {
+          document.querySelectorAll(".more-services").forEach(el => el.classList.toggle("hidden"));
+          const btn = document.getElementById("seeMoreBtn");
+          btn.innerText = btn.innerText === "See More" ? "See Less" : "See More";
+        }}
+      >
+        See More
+      </button>
+    </div>
   </div>
 </section>
-
-
-
 
       {/* Testimonials Section */}
       <section className="bg-gray-50 py-12">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-2xl font-bold text-gray-700 mb-6">What Our Customers Say About Us</h2>
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-700 mb-6">What Our Customers Say About Us</h2>
           <blockquote className="bg-white rounded-lg shadow-md p-6 mx-auto max-w-2xl">
             <p className="text-gray-600 italic mb-4">"The professionals listed are trustworthy and skilled. The reviews really help in choosing the right person."</p>
             <div className="flex items-center justify-center space-x-2">
@@ -120,21 +179,16 @@ const HomePage = () => {
       </section>
 
       {/* Footer */}
-      <footer className="bg-[#1F4A9B] text-white py-6">
-        <div className="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center">
-          <div className="text-center md:text-left mb-4 md:mb-0">
+      <footer className="bg-[#1F4A9B] text-white py-8">
+        <div className="container mx-auto flex flex-col md:flex-row justify-between items-center px-6">
+          <div className="text-center md:text-left mb-6 md:mb-0">
             <h3 className="font-bold text-lg">SkillSeek</h3>
-            <p>Your trusted platform for convenient, reliable, and hassle-free services with professionals!</p>
+            <p className="text-gray-200 text-sm">Your trusted platform for convenient, reliable services.</p>
           </div>
           <div className="text-center md:text-right">
-            <p>Useful Links</p>
             <ul className="space-y-2">
-              <li>
-                <a href="#" className="hover:underline">Our Services</a>
-              </li>
-              <li>
-                <a href="#" className="hover:underline">FAQ</a>
-              </li>
+              <li><a href="#" className="hover:underline">Our Services</a></li>
+              <li><a href="#" className="hover:underline">FAQ</a></li>
             </ul>
           </div>
         </div>
