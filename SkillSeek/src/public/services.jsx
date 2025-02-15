@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import Navbar from "./Navbar"; // Import Navbar
+import { useNavigate } from "react-router-dom"; // Import useNavigate from react-router-dom
+import Navbar from "./navbar"; // Import Navbar
 
 const services = [
   { name: "Plumber", image: "src/assets/image/om54m6zx.bmp", description: "Expert plumbing services for your home and office.", rating: 4.5 },
@@ -13,6 +14,7 @@ const services = [
 
 const ServicePage = () => {
   const [searchTerm, setSearchTerm] = useState("");
+  const navigate = useNavigate(); // Initialize useNavigate
 
   const filteredServices = services.filter(service =>
     service.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -24,14 +26,14 @@ const ServicePage = () => {
 
       {/* Search Bar */}
       <div className="container mx-auto px-7 py-9">
-  <input
-    type="text"
-    placeholder="Search services..."
-    value={searchTerm}
-    onChange={(e) => setSearchTerm(e.target.value)}
-    className="w-full border border-[#1F4A9B] rounded-lg p-5 text-sm text-gray-1000 focus:outline-none focus:ring-2 focus:ring-[#1F4A9B] h-10"
-  />
-</div>
+        <input
+          type="text"
+          placeholder="Search services..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="w-full border border-[#1F4A9B] rounded-lg p-5 text-sm text-gray-1000 focus:outline-none focus:ring-2 focus:ring-[#1F4A9B] h-10"
+        />
+      </div>
 
       {/* Service Listing Section */}
       <div className="container mx-auto px-4 py-8">
@@ -54,6 +56,7 @@ const ServicePage = () => {
                 </div>
                 <button
                   className="bg-[#1F4A9B] text-white px-6 py-2 rounded-full font-medium hover:bg-[#104E71] transition duration-300"
+                  onClick={() => navigate(`/service-detail?name=${service.name.toLowerCase()}`)}
                 >
                   View More
                 </button>
