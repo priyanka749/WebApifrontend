@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { FaRegStar, FaStar, FaStarHalfAlt } from "react-icons/fa";
-import Navbar from "./Navbar";
+import Navbar from "./navbar";
 
 const plumbers = [
   {
@@ -11,7 +11,7 @@ const plumbers = [
     specialty: "Leak Detection, Pipe Repair",
     reviews: 25,
     rating: 4.5,
-    rate: 50,
+    
   },
   {
     id: 2,
@@ -21,7 +21,7 @@ const plumbers = [
     specialty: "Water Heater Installation, Drain Cleaning",
     reviews: 18,
     rating: 4.0,
-    rate: 45,
+
   },
   {
     id: 3,
@@ -31,7 +31,7 @@ const plumbers = [
     specialty: "Sewer Repair, Maintenance",
     reviews: 30,
     rating: 4.8,
-    rate: 60,
+   
   },
   {
     id: 4,
@@ -41,7 +41,7 @@ const plumbers = [
     specialty: "Eco-Friendly Plumbing, Pipe Replacement",
     reviews: 10,
     rating: 3.8,
-    rate: 40,
+    
   },
   {
     id: 5,
@@ -51,7 +51,7 @@ const plumbers = [
     specialty: "Leak Detection, Installation",
     reviews: 35,
     rating: 4.9,
-    rate: 70,
+   
   },
 ];
 
@@ -129,7 +129,7 @@ const PlumberList = () => {
                 </div>
                 <div className="text-right">
                   <p className="text-green-600 text-2xl font-bold">
-                    Rs{plumber.rate} <span className="text-sm">per hour</span>
+                    
                   </p>
                   <div className="mt-3 flex space-x-3">
                     <button className="bg-green-500 text-white px-5 py-2 rounded-lg hover:bg-green-600 transition">
