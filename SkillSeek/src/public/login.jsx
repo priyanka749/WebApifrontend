@@ -1,11 +1,46 @@
-import React from "react";
+import axios from "axios";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import illustration from "../assets/image/home-cleaning-services-500x500 1.png"; // Adjust path
 import logo from "../assets/image/skillseeklogo.png"; // Adjust path
 
 const Login = () => {
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+  const [message, setMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setMessage(""); // Reset message on new submit
+    try {
+      const response = await axios.post("http://localhost:3000/api/auth/login", formData);
+      setMessage(response.data.message);
+
+      // Redirect to home page if login is successful
+      if (response.status === 200) {
+        setTimeout(() => {
+          navigate("/home#"); // Adjust the path if your homepage is different
+        }, 1000);
+      }
+    } catch (error) {
+      setMessage(error.response?.data?.message || "Something went wrong. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
-    <div className="flex items-center justify-center py-10 min-h-10 bg-gray-100">
-      <div className="w-full max-w-6xl bg-white shadow-xl rounded-3xl overflow-hidden grid grid-cols-4 md:grid-cols-2">
+    <div className="flex items-center justify-center py-10 min-h-screen bg-gray-100">
+      <div className="w-full max-w-6xl bg-white shadow-xl rounded-3xl overflow-hidden grid grid-cols-1 md:grid-cols-2">
         {/* Left Section - Form */}
         <div className="p-10 flex flex-col justify-center">
           <div className="mb-6">
@@ -18,27 +53,30 @@ const Login = () => {
             </p>
           </div>
 
-          <form className="space-y-6">
+          <form className="space-y-6" onSubmit={handleSubmit}>
             <div>
-              <label className="block text-sm-10 font-medium text-gray-900">Email</label>
+              <label className="block text-sm font-medium text-gray-900"></label>
               <input
                 type="email"
+                name="email"
                 placeholder="Enter your email"
-                className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1F4A9B] placeholder-gray-400 shadow-sm-10"
+                className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1F4A9B] placeholder-gray-600 shadow-sm"
+                onChange={handleChange}
+                required
               />
             </div>
 
             <div>
-              <label className="block text-sm-10 font-medium text-gray-900">Password</label>
+              <label className="block text-sm font-medium text-gray-900"></label>
               <div className="relative">
                 <input
                   type="password"
+                  name="password"
                   placeholder="Enter your password"
-                  className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1F4A9B] placeholder-gray-400 shadow-sm"
+                  className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1F4A9B] placeholder-gray-600 shadow-sm"
+                  onChange={handleChange}
+                  required
                 />
-                <button type="button" className="absolute inset-y-0 right-4 flex items-center text-gray-400">
-                  <i className="fas fa-eye"></i>
-                </button>
               </div>
             </div>
 
@@ -61,15 +99,22 @@ const Login = () => {
             <button
               type="submit"
               className="w-full py-3 text-lg font-semibold text-white bg-[#1F4A9B] rounded-lg hover:bg-blue-800 transition-all"
+              disabled={isLoading}
             >
-              Login
+              {isLoading ? "Logging in..." : "Login"}
             </button>
           </form>
+
+          {message && (
+            <p className={`mt-4 text-center ${message.includes("success") ? "text-green-500" : "text-red-500"}`}>
+              {message}
+            </p>
+          )}
 
           <p className="text-center text-gray-900 mt-9">
             Don’t have an account?{" "}
             <a href="#" className="text-[#1F4A9B] font-bold hover:underline">
-              SignUp
+              Sign Up
             </a>
           </p>
         </div>
