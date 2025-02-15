@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { FaCheckCircle, FaClock, FaFileAlt, FaMapMarkerAlt, FaStar } from "react-icons/fa";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 import plumberImage from "../assets/image/om54m6zx.bmp"; // Import plumber image
 
 const ServiceDetail = () => {
   const [activeTab, setActiveTab] = useState("description");
+  const navigate = useNavigate(); // Initialize useNavigate
 
   const renderTabContent = () => {
     switch (activeTab) {
@@ -106,7 +108,10 @@ const ServiceDetail = () => {
 
       {/* Full-Width Request Service Button */}
       <div className="max-w-7xl mx-auto mt-8">
-        <button className="w-full bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg text-lg font-semibold transition">
+        <button
+          className="w-full bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg text-lg font-semibold transition"
+          onClick={() => navigate("/available")} // Navigate to available services
+        >
           Request Service
         </button>
       </div>
