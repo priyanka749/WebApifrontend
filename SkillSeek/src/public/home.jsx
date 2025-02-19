@@ -46,13 +46,13 @@ const HomePage = () => {
           {/* Services Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              { name: "Plumber", image: "src/assets/image/om54m6zx.bmp", rating: 4.5, description: "Expert plumbing services for your home and office." },
-              { name: "Painter", image: "src/assets/image/wagke2a5.bmp", rating: 4.7, description: "High-quality painting services for a fresh look." },
-              { name: "Carpenter", image: "src/assets/image/2xizyjeo.bmp", rating: 4.8, description: "Custom woodwork and carpentry solutions." },
-              { name: "Cook", image: "src/assets/image/4p8r98ea.bmp", rating: 4.6, description: "Professional cooking services for events and daily needs." },
-              { name: "Electrician", image: "src/assets/image/2jfm1job.bmp", rating: 4.9, description: "Reliable electrical services for all your needs." },
-              { name: "Cleaner", image: "src/assets/image/mymaxb2f.bmp", rating: 4.8, description: "Top-notch cleaning services for homes and offices." },
-              { name: "Driver", image: "src/assets/image/7yx2yawu.bmp", rating: 4.8, description: "Professional driving services for all your needs." }
+              { name: "Plumber", image: "src/assets/image/om54m6zx.bmp",  description: "Expert plumbing services for your home and office." },
+              { name: "Painter", image: "src/assets/image/wagke2a5.bmp", description: "High-quality painting services for a fresh look." },
+              { name: "Carpenter", image: "src/assets/image/2xizyjeo.bmp", description: "Custom woodwork and carpentry solutions." },
+              { name: "Cook", image: "src/assets/image/4p8r98ea.bmp", description: "Professional cooking services for events and daily needs." },
+              { name: "Electrician", image: "src/assets/image/2jfm1job.bmp", description: "Reliable electrical services for all your needs." },
+              { name: "Cleaner", image: "src/assets/image/mymaxb2f.bmp", description: "Top-notch cleaning services for homes and offices." },
+              { name: "Driver", image: "src/assets/image/7yx2yawu.bmp",  description: "Professional driving services for all your needs." }
             ].map((service) => (
               <div
                 key={service.name}
@@ -64,7 +64,7 @@ const HomePage = () => {
                 <h3 className="text-lg md:text-xl font-bold text-gray-800 mb-2">{service.name}</h3>
                 <p className="text-gray-600 mb-4 text-sm md:text-base">{service.description}</p>
                 <div className="flex items-center space-x-1 mb-2">
-                  <span className="text-yellow-500 text-lg">★</span>
+                  <span className="text-yellow-500 text-lg"></span>
                   <span className="text-gray-800 font-semibold">{service.rating}</span>
                 </div>
                 <button

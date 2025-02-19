@@ -1,79 +1,161 @@
-import React, { useState } from "react";
-import { FaCamera, FaEnvelope, FaMapMarkerAlt, FaUser } from "react-icons/fa";
-
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const UserProfile = () => {
-  const [profileImage, setProfileImage] = useState(
-    "https://img.freepik.com/free-photo/portrait-smiling-young-man-casual-shirt_23-2148479847.jpg"
-  );
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const userIdFromURL = queryParams.get("userId"); // Retrieve userId from URL parameters
+  const [customer, setCustomer] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
+  const [formData, setFormData] = useState({
+      name: "",
+      location: "",
+      profileImage: "",
+  });
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setProfileImage(imageUrl);
+  useEffect(() => {
+    const token = localStorage.getItem("authToken");  // Get the JWT token from localStorage
+
+    if (token) {
+        // Decode the JWT token to extract the userId
+        const decodedToken = jwt_decode(token);
+        const userId = decodedToken.id;  // Assuming the userId is stored in the 'id' field of the token
+
+        if (userId) {
+            fetchProfile(userId);  // Fetch the profile using the userId
+        } else {
+            console.error("Error: userId not found in token.");
+            toast.error("Invalid token. Please log in again.");
+        }
+    } else {
+        console.error("Error: Token is missing. Skipping API call.");
+        toast.error("Token is missing. Please log in again.");
     }
+}, []);
+
+  const fetchProfile = async (userId) => {
+    try {
+        const response = await axios.get(`http://localhost:3000/api/customers/profile/${userId}`, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("authToken")}`, // Pass token in Authorization header
+            },
+        });
+
+        if (!response.data) {
+            throw new Error("Empty response from server");
+        }
+
+        setCustomer(response.data);
+        setFormData({
+            name: response.data.name || "",
+            location: response.data.location || "",
+            profileImage: response.data.profileImage || "",
+        });
+    } catch (error) {
+        console.error("Error fetching profile:", error.response?.data || error.message);
+        toast.error(
+            error.response?.data?.message
+                ? `Failed to load profile: ${error.response.data.message}`
+                : "Failed to load profile. Please check your connection."
+        );
+    }
+};
+
+const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+};
+
+const handleUpdate = async () => {
+    try {
+        const token = localStorage.getItem("authToken");
+        const decodedToken = jwt_decode(token);
+        const userId = decodedToken.id;
+
+        await axios.put(`http://localhost:3000/api/customers/profile/${userId}`, formData, {
+            headers: { Authorization: `Bearer ${token}` },
+        });
+
+        toast.success("Profile updated successfully!");
+        setIsEditing(false);
+        fetchProfile(userId); // Refresh the data
+    } catch (error) {
+        toast.error("Update failed");
+    }
+};
+
+  const handleLogout = () => {
+      localStorage.removeItem("authToken");
+      window.location.reload();
   };
 
-  return (
-    <div className="bg-gray-100 min-h-screen p-6">
-      <div className="max-w-4xl mx-auto bg-white shadow-md rounded-lg overflow-hidden">
-        {/* Profile Header */}
-        <div className="bg-[#1F4A9B] p-8 text-white flex flex-col lg:flex-row items-center lg:items-start">
-          <div className="relative w-32 h-32 mb-6 lg:mb-0 lg:mr-8">
-            <img
-              src={profileImage}
-              alt="User"
-              className="w-32 h-32 rounded-full object-cover border-4 border-white"
-            />
-            <label
-              htmlFor="profileImage"
-              className="absolute bottom-0 right-0 bg-gray-800 p-2 rounded-full cursor-pointer hover:bg-gray-700 transition"
-            >
-              <FaCamera className="text-white text-lg" />
-              <input
-                type="file"
-                id="profileImage"
-                accept="image/*"
-                className="hidden"
-                onChange={handleImageChange}
-              />
-            </label>
-          </div>
-          <div className="flex-1 text-center lg:text-left">
-            <h1 className="text-3xl font-bold">John Smith</h1>
-            <p className="text-lg mt-2 flex items-center justify-center lg:justify-start">
-              <FaUser className="mr-2" /> User Profile
-            </p>
-          </div>
-        </div>
+  if (!customer) return <div className="text-center mt-10">Loading...</div>;
 
-        {/* User Details */}
-        <div className="p-6">
-          <h2 className="text-2xl font-bold text-[#1F4A9B] mb-4">Profile Details</h2>
-          <div className="space-y-4">
-            <div className="flex items-center">
-              <FaUser className="text-[#1F4A9B] text-2xl mr-4" />
-              <p className="text-gray-700 text-lg">
-                <span className="font-semibold">Name:</span> John Smith
-              </p>
+    return (
+        <div className="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-md mt-10">
+            <h2 className="text-2xl font-bold mb-4 text-center">Customer Profile</h2>
+            <div className="flex flex-col items-center">
+                <img
+                    src={customer.profileImage || "https://via.placeholder.com/150"}
+                    alt="Profile"
+                    className="w-32 h-32 rounded-full border"
+                />
+                {isEditing ? (
+                    <>
+                        <input
+                            type="text"
+                            name="name"
+                            value={formData.name}
+                            onChange={handleChange}
+                            className="border p-2 mt-3 w-full rounded"
+                            placeholder="Name"
+                        />
+                        <input
+                            type="text"
+                            name="location"
+                            value={formData.location}
+                            onChange={handleChange}
+                            className="border p-2 mt-3 w-full rounded"
+                            placeholder="Location"
+                        />
+                        <input
+                            type="text"
+                            name="profileImage"
+                            value={formData.profileImage}
+                            onChange={handleChange}
+                            className="border p-2 mt-3 w-full rounded"
+                            placeholder="Profile Image URL"
+                        />
+                        <button
+                            onClick={handleUpdate}
+                            className="bg-blue-500 text-white px-4 py-2 mt-4 rounded"
+                        >
+                            Save
+                        </button>
+                    </>
+                ) : (
+                    <>
+                        <h3 className="text-xl font-semibold mt-3">{customer.name}</h3>
+                        <p className="text-gray-600">{customer.location}</p>
+                        <button
+                            onClick={() => setIsEditing(true)}
+                            className="bg-yellow-500 text-white px-4 py-2 mt-4 rounded"
+                        >
+                            Edit Profile
+                        </button>
+                    </>
+                )}
+                <button
+                    onClick={handleLogout}
+                    className="bg-red-500 text-white px-4 py-2 mt-4 rounded"
+                >
+                    Logout
+                </button>
             </div>
-            <div className="flex items-center">
-              <FaEnvelope className="text-[#1F4A9B] text-2xl mr-4" />
-              <p className="text-gray-700 text-lg">
-                <span className="font-semibold">Email:</span> john.smith@example.com
-              </p>
-            </div>
-            <div className="flex items-center">
-              <FaMapMarkerAlt className="text-[#1F4A9B] text-2xl mr-4" />
-              <p className="text-gray-700 text-lg">
-                <span className="font-semibold">Address:</span> 123 Main Street, Boston, MA, USA
-              </p>
-            </div>
-          </div>
+            <ToastContainer />
         </div>
-      </div>
-    </div>
-  );
+    );
 };
 
 export default UserProfile;

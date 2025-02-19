@@ -1,111 +1,130 @@
-import React from "react";
-import { FaEnvelope, FaMapMarkerAlt } from "react-icons/fa";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { FaMapMarkerAlt, FaPhone, FaStar, FaWrench } from "react-icons/fa";
 
-const ProfilePage = () => {
+const ServiceProviderList = () => {
+  const [providers, setProviders] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [search, setSearch] = useState("");
+
+  useEffect(() => {
+    const fetchProviders = async () => {
+      setLoading(true);
+      try {
+        const response = await axios.get("http://localhost:3000/api/provider?page=1&limit=10");
+        setProviders(response.data.providers);
+      } catch (err) {
+        setError("Failed to fetch service providers.");
+        console.error("Error fetching providers:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProviders();
+  }, []);
+
+  const handleSendRequest = async (providerId) => {
+    const requestPayload = {
+      customerId: "67afaabbc0b1c93513a31c07", // Replace with actual customer ID
+      providerId: providerId,
+      serviceDetails: "Looking for plumbing services",
+    };
+
+    try {
+      const response = await axios.post("http://localhost:3000/api/request", requestPayload);
+      alert("Request sent successfully!");
+    } catch (error) {
+      console.error("Error sending request:", error);
+      alert("Failed to send request.");
+    }
+  };
+
+  // Filter only plumbers based on skills
+  const plumbers = providers.filter(
+    (provider) =>
+      provider.skills.some((skill) => skill.toLowerCase().includes("plumber")) &&
+      provider.bio.toLowerCase().includes(search.toLowerCase())
+  );
+
+  if (loading) {
+    return <p className="text-center text-blue-500">Loading service providers...</p>;
+  }
+
+  if (error) {
+    return <p className="text-center text-red-500">{error}</p>;
+  }
+
   return (
     <div className="bg-gray-100 min-h-screen p-6">
-      <div className="max-w-6xl mx-auto bg-white shadow-md rounded-lg overflow-hidden">
-        {/* Profile Header */}
-        <div className="bg-[#1F4A9B] p-8 text-white flex flex-col lg:flex-row items-center lg:items-start">
-          <img
-            src="https://img.freepik.com/free-photo/young-bearded-man-with-white-t-shirt_273609-7187.jpg"
-            alt="Service Provider"
-            className="w-32 h-32 rounded-full object-cover border-4 border-white mb-6 lg:mb-0 lg:mr-8"
+      <div className="max-w-7xl mx-auto">
+        <h1 className="text-4xl font-bold text-[#1F4A9B] text-center mb-10">Available Plumbers</h1>
+
+        <div className="mb-8">
+          <input
+            type="text"
+            placeholder="Search by specialty (e.g., Leak Detection, Installation)"
+            className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1F4A9B]"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
           />
-          <div className="flex-1 text-center lg:text-left">
-            <h1 className="text-3xl font-bold">John Doe</h1>
-            <p className="text-lg mt-2">
-              Professional Plumber <span className="text-gray-300"> | </span> 10+ Years Experience
-            </p>
-            <p className="flex items-center justify-center lg:justify-start mt-2 text-gray-200">
-              <FaMapMarkerAlt className="mr-2" /> Boston, MA, United States
-            </p>
-          </div>
-          <button className="bg-gray-200 text-gray-800 px-6 py-2 rounded-lg font-bold mt-6 lg:mt-0 flex items-center hover:bg-gray-300 transition">
-            <FaEnvelope className="mr-2" /> Send Message
-          </button>
         </div>
 
-        {/* Stats Section */}
-        <div className="p-6 flex flex-wrap justify-around bg-gray-50">
-          <div className="text-center mb-4">
-            <h2 className="text-2xl font-bold">440</h2>
-            <p className="text-gray-600">Followers</p>
-          </div>
-          <div className="text-center mb-4">
-            <h2 className="text-2xl font-bold">4.8</h2>
-            <p className="text-gray-600">Average Rating</p>
-          </div>
-          <div className="text-center mb-4">
-            <h2 className="text-2xl font-bold">120</h2>
-            <p className="text-gray-600">Completed Jobs</p>
-          </div>
-        </div>
-
-        {/* Core Skills */}
-        <div className="p-6">
-          <h2 className="text-2xl font-bold text-[#1F4A9B] mb-4">My Core Skills</h2>
-          <div className="flex flex-wrap gap-3">
-            <span className="bg-blue-100 text-blue-600 px-4 py-2 rounded-full font-medium">
-              Leak Detection
-            </span>
-            <span className="bg-blue-100 text-blue-600 px-4 py-2 rounded-full font-medium">
-              Pipe Repair
-            </span>
-            <span className="bg-blue-100 text-blue-600 px-4 py-2 rounded-full font-medium">
-              Water Heater Installation
-            </span>
-            <span className="bg-blue-100 text-blue-600 px-4 py-2 rounded-full font-medium">
-              Eco-Friendly Solutions
-            </span>
-          </div>
-        </div>
-
-        {/* Professional Bio */}
-        <div className="p-6">
-          <h2 className="text-2xl font-bold text-[#1F4A9B] mb-4">Professional Bio</h2>
-          <p className="text-gray-700 leading-relaxed">
-            With over a decade of experience in residential and commercial plumbing, I specialize in
-            providing fast and reliable plumbing solutions. From leak detection and pipe repair to
-            water heater installations, I am committed to delivering high-quality service. I am also
-            passionate about eco-friendly solutions to reduce water waste and ensure sustainable
-            practices.
-          </p>
-        </div>
-
-        {/* Badges Section */}
-        <div className="p-6">
-          <h2 className="text-2xl font-bold text-[#1F4A9B] mb-4">My Badges</h2>
-          <div className="flex flex-wrap gap-6">
-            <div className="flex items-center">
-              <img
-                src="https://img.icons8.com/color/96/plumbing.png"
-                alt="Certified Plumber"
-                className="w-16 h-16"
-              />
-              <p className="ml-4 font-medium">Certified Plumber</p>
-            </div>
-            <div className="flex items-center">
-              <img
-                src="https://img.icons8.com/color/96/water.png"
-                alt="Eco-Friendly Solutions"
-                className="w-16 h-16"
-              />
-              <p className="ml-4 font-medium">Eco-Friendly Solutions</p>
-            </div>
-            <div className="flex items-center">
-              <img
-                src="https://img.icons8.com/color/96/toolbox.png"
-                alt="Maintenance Expert"
-                className="w-16 h-16"
-              />
-              <p className="ml-4 font-medium">Maintenance Expert</p>
-            </div>
-          </div>
+        <div className="space-y-6">
+          {plumbers.length > 0 ? (
+            plumbers.map((provider) => (
+              <div
+                key={provider.id}
+                className="bg-white shadow-lg rounded-lg p-6 flex items-center hover:shadow-xl transition-all"
+              >
+                <div className="w-24 h-24 rounded-full border-4 border-[#1F4A9B] mr-6 flex items-center justify-center bg-gray-100 overflow-hidden">
+                  {provider.profileImage ? (
+                    <img
+                      src={provider.profileImage}
+                      alt={provider.name}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <FaWrench className="text-4xl text-gray-500" />
+                  )}
+                </div>
+                <div className="flex-1">
+                  <h2 className="text-2xl font-bold text-black">{provider.name || "N/A"}</h2>
+                  <p className="text-black font-medium mt-2">
+                    <FaPhone className="inline-block text-[#1F4A9B] mr-2" />
+                    {provider.phoneNumber || "No phone number available"}
+                  </p>
+                  <p className="text-black font-medium mt-1">
+                    <FaMapMarkerAlt className="inline-block text-[#1F4A9B] mr-2" />
+                    {provider.location || "Location not available"}
+                  </p>
+                  <p className="text-black font-medium mt-1">Bio: {provider.bio || "No bio available"}</p>
+                  <div className="mt-2 flex items-center">
+                    <FaStar className="text-yellow-500 mr-1" />
+                    <span className="text-black font-semibold">{provider.rating?.toFixed(1) || "0.0"}</span>
+                  </div>
+                </div>
+                <div className="flex space-x-4">
+                  <button
+                    onClick={() => handleSendRequest(provider.id)}
+                    className="bg-green-500 text-white px-6 py-2 rounded-lg font-semibold hover:bg-green-600"
+                  >
+                    Send Request
+                  </button>
+                  <button className="bg-blue-500 text-white px-6 py-2 rounded-lg font-semibold hover:bg-blue-600">
+                    View Details
+                  </button>
+                </div>
+              </div>
+            ))
+          ) : (
+            <p className="text-center text-gray-600">No plumbers found.</p>
+          )}
         </div>
       </div>
     </div>
   );
 };
 
-export default ProfilePage;
+export default ServiceProviderList;

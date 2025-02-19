@@ -109,10 +109,10 @@ const ServiceDetail = () => {
       {/* Full-Width Request Service Button */}
       <div className="max-w-7xl mx-auto mt-8">
         <button
-          className="w-full bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg text-lg font-semibold transition"
+          className="w-full bg-[#1F4A9B] hover:bg-orange-600 text-white px-6 py-3 rounded-lg text-lg font-semibold transition"
           onClick={() => navigate("/available")} // Navigate to available services
         >
-          Request Service
+          Find Plumbers Available 
         </button>
       </div>
 

@@ -4,6 +4,7 @@ import About from "./public/about"; // Import the Service component
 import PlumberList from "./public/available";
 import HomePage from "./public/home";
 import Login from "./public/login";
+import Dashboard from "./public/servicedash";
 import ServiceDetail from "./public/servicedetail"; // Import the ServiceDetail component
 import ProfilePage from "./public/serviceprofile";
 import Service from "./public/services";
@@ -21,9 +22,10 @@ function App() {
     { path: "*", element: <>Unauthorized</> },
     {path:"/available",element:<PlumberList/>},
     {path:"/serviceprofile",element:<ProfilePage/>},
-    {path:"/userprofile",element:<UserProfile/>},
+    {path:"/userprofile/:userId",element:<UserProfile/>},
     {path:"/login",element:<Login/>},
-    {path:"/token",element:<TokenLogin/>}
+    {path:"/token",element:<TokenLogin/>},
+    {path:"/dashboard",element:<Dashboard/>}
 
     
     

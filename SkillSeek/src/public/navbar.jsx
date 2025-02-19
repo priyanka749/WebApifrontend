@@ -1,165 +1,123 @@
-import { Bell } from "lucide-react"; // Notification Icon
-import React, { useEffect, useState } from "react";
+import { Menu, X } from "lucide-react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import { getUserProfile } from "../utils/authHelper";
 const Navbar = () => {
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [showNavbar, setShowNavbar] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [profilePic, setProfilePic] = useState(null); // Profile picture state
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [userId, setUserId] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Check if user is logged in and retrieve profile picture
-    const user = JSON.parse(localStorage.getItem("user"));
-    if (user) {
-      setIsLoggedIn(true);
-      setProfilePic(user.profilePic || null); // Assume 'user' object has 'profilePic'
-    }
+    const fetchUserId = async () => {
+      const id = await getUserProfile();
+      setUserId(id);
+      console.log("User ID:", id);
+    };
+    fetchUserId();
   }, []);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > lastScrollY) {
-        setShowNavbar(false);
-      } else {
-        setShowNavbar(true);
-      }
-      setLastScrollY(window.scrollY);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [lastScrollY]);
-
-  const handleNavigate = (path) => {
-    navigate(path);
-    setMenuOpen(false);
-  };
-
-  const handleLogout = () => {
-    localStorage.removeItem("user");
-    setIsLoggedIn(false);
-    setProfilePic(null);
-    navigate("/login");
-  };
-
   return (
-    <header
-      className={`shadow-lg py-5 sticky top-0 z-50 bg-white transition-transform duration-300 ${
-        showNavbar ? "translate-y-0" : "-translate-y-full"
-      }`}
-    >
-      <div className="container mx-auto px-4 md:px-6 flex items-center justify-between">
-        {/* Logo */}
-        <div className="flex items-center space-x-6 cursor-pointer" onClick={() => handleNavigate("/home")}>
-          <img src="src/assets/image/skillseeklogo.png" className="h-20 md:h-22" alt="SkillSeek Logo" />
-        </div>
-
-        {/* Desktop Navigation */}
-        <nav className="hidden md:flex space-x-8">
-          <span
-            onClick={() => handleNavigate("/home")}
-            className="cursor-pointer text-[#1F4A9B] text-lg font-medium hover:text-gray-500 transition duration-300 ease-in-out"
+    <nav className="bg-white border-gray-200 dark:bg-gray-900">
+      <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+        <a href="https://flowbite.com/" className="flex items-center space-x-3">
+          <img
+            src="https://flowbite.com/docs/images/logo.svg"
+            className="h-8"
+            alt="Flowbite Logo"
+          />
+          <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
+            Flowbite
+          </span>
+        </a>
+        <div className="flex items-center md:order-2 space-x-3">
+          <button
+            type="button"
+            className="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
+            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
           >
-            Home
-          </span>
-          <span
-            onClick={() => handleNavigate("/service")}
-            className="cursor-pointer text-[#1F4A9B] text-lg font-medium hover:text-gray-500 transition duration-300 ease-in-out"
-          >
-            Services
-          </span>
-          <span className="cursor-pointer text-[#1F4A9B] text-lg font-medium hover:text-gray-500 transition duration-300 ease-in-out">
-            Help
-          </span>
-          <span className="cursor-pointer text-[#1F4A9B] text-lg font-medium hover:text-gray-500 transition duration-300 ease-in-out">
-            Others
-          </span>
-        </nav>
-
-        {/* Notification Icon and Profile/Buttons */}
-        <div className="flex space-x-6 items-center">
-          <Bell className="w-6 h-6 text-[#1F4A9B] cursor-pointer hover:text-gray-500 transition duration-300" />
-          {isLoggedIn ? (
-            <div className="relative flex items-center space-x-4">
-              <img
-                src={profilePic || "https://via.placeholder.com/50"} // Default profile icon if no picture is available
-                alt="Profile"
-                className="w-12 h-12 rounded-full cursor-pointer border border-gray-300"
-                onClick={() => handleNavigate("/profile")}
-              />
-              <button
-                className="px-4 py-2 bg-red-500 text-white font-bold rounded-full shadow-md hover:bg-red-600 transition-all duration-300 ease-in-out"
-                onClick={handleLogout}
-              >
-                Logout
-              </button>
-            </div>
-          ) : (
-            <div className="hidden md:flex space-x-4">
-              <button
-                className="px-4 py-2 bg-[#1F4A9B] text-white font-bold rounded-full shadow-md hover:bg-[#104e71] transition-all duration-300 ease-in-out transform hover:scale-105"
-                onClick={() => handleNavigate("/login")}
-              >
-                Sign In
-              </button>
-              <button
-                className="px-4 py-2 bg-[#1F4A9B] text-white font-bold rounded-full shadow-md hover:bg-[#104e71] transition-all duration-300 ease-in-out transform hover:scale-105"
-                onClick={() => handleNavigate("/signup")}
-              >
-                Sign Up
-              </button>
+            <img
+              className="w-8 h-8 rounded-full"
+              src="/docs/images/people/profile-picture-3.jpg"
+              alt="User Photo"
+            />
+          </button>
+          {isDropdownOpen && (
+            <div className="absolute right-4 mt-4 w-48 bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600">
+              <div className="px-4 py-3">
+                <span className="block text-sm text-gray-900 dark:text-white">Bonnie Green</span>
+                <span className="block text-sm text-gray-500 truncate dark:text-gray-400">
+                  name@flowbite.com
+                </span>
+              </div>
+              <ul className="py-2">
+                <li>
+                  <button
+                    onClick={() => navigate(`/userprofile/${userId}`)}
+                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200"
+                  >
+                    Dashboard
+                  </button>
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200"
+                  >
+                    Settings
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200"
+                  >
+                    Earnings
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200"
+                  >
+                    Sign out
+                  </a>
+                </li>
+              </ul>
             </div>
           )}
-          <button className="md:hidden text-[#1F4A9B] text-3xl focus:outline-none" onClick={() => setMenuOpen(!menuOpen)}>
-            ☰
+          <button
+            className="md:hidden p-2 text-gray-500 rounded-lg hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          >
+            {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
         </div>
-      </div>
-
-      {/* Mobile Menu */}
-      {menuOpen && (
-        <div className="absolute top-16 left-0 w-full bg-white shadow-lg z-50 rounded-b-xl">
-          <nav className="flex flex-col space-y-2 p-4">
-            <span
-              onClick={() => handleNavigate("/home")}
-              className="cursor-pointer text-[#1F4A9B] text-lg font-medium bg-gray-100 p-3 rounded-lg hover:bg-gray-200 transition duration-300 ease-in-out"
-            >
-              Home
-            </span>
-            <span
-              onClick={() => handleNavigate("/service")}
-              className="cursor-pointer text-[#1F4A9B] text-lg font-medium bg-gray-100 p-3 rounded-lg hover:bg-gray-200 transition duration-300 ease-in-out"
-            >
-              Services
-            </span>
-            <span className="cursor-pointer text-[#1F4A9B] text-lg font-medium bg-gray-100 p-3 rounded-lg hover:bg-gray-200 transition duration-300 ease-in-out">
-              Help
-            </span>
-            <span className="cursor-pointer text-[#1F4A9B] text-lg font-medium bg-gray-100 p-3 rounded-lg hover:bg-gray-200 transition duration-300 ease-in-out">
-              Others
-            </span>
-          </nav>
-          {!isLoggedIn && (
-            <div className="flex flex-col space-y-4 p-4">
-              <button
-                className="px-4 py-3 bg-[#1F4A9B] text-white font-bold rounded-lg shadow-md hover:bg-[#104e71] transition-all duration-300 ease-in-out transform hover:scale-105"
-                onClick={() => handleNavigate("/login")}
-              >
-                Sign In
-              </button>
-              <button
-                className="px-4 py-3 bg-[#1F4A9B] text-white font-bold rounded-lg shadow-md hover:bg-[#104e71] transition-all duration-300 ease-in-out transform hover:scale-105"
-                onClick={() => handleNavigate("/signup")}
-              >
-                Sign Up
-              </button>
-            </div>
-          )}
+        <div
+          className={`items-center justify-between w-full md:flex md:w-auto md:order-1 ${
+            isMenuOpen ? "block" : "hidden"
+          }`}
+        >
+          <ul className="flex flex-col font-medium p-4 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+            <li>
+              <a href="#" className="block py-2 px-3 text-blue-700">Home</a>
+            </li>
+            <li>
+              <a href="#" className="block py-2 px-3 text-gray-900 dark:text-white">About</a>
+            </li>
+            <li>
+              <a href="#" className="block py-2 px-3 text-gray-900 dark:text-white">Services</a>
+            </li>
+            <li>
+              <a href="#" className="block py-2 px-3 text-gray-900 dark:text-white">Pricing</a>
+            </li>
+            <li>
+              <a href="#" className="block py-2 px-3 text-gray-900 dark:text-white">Contact</a>
+            </li>
+          </ul>
         </div>
-      )}
-    </header>
+      </div>
+    </nav>
   );
 };
 
