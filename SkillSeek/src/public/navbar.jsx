@@ -1,33 +1,33 @@
 import { Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getUserProfile } from "../utils/authHelper";
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [userId, setUserId] = useState(null);
   const navigate = useNavigate();
-
+  
   useEffect(() => {
-    const fetchUserId = async () => {
-      const id = await getUserProfile();
-      setUserId(id);
-      console.log("User ID:", id);
-    };
-    fetchUserId();
+      // Retrieve userId from localStorage
+      const id = localStorage.getItem("userId");
+      if (id) {
+          setUserId(id);
+          console.log("User ID from localStorage:", id);
+      }
   }, []);
+  
 
   return (
     <nav className="bg-white border-gray-200 dark:bg-gray-900">
-      <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-        <a href="https://flowbite.com/" className="flex items-center space-x-3">
-          <img
-            src="https://flowbite.com/docs/images/logo.svg"
-            className="h-8"
-            alt="Flowbite Logo"
-          />
+  <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+    <a href="/home" className="flex items-center space-x-3">
+      <img
+        src="/assets/images/skillseeklogo.png"  // Your custom logo path
+        className="h-8"
+        
+      />
           <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
-            Flowbite
+           
           </span>
         </a>
         <div className="flex items-center md:order-2 space-x-3">

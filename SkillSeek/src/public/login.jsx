@@ -73,14 +73,15 @@ import logo from "../assets/image/skillseeklogo.png"; // Adjust path
     
         try {
             const response = await axios.post("http://localhost:3000/api/auth/login", formData);
-    
+
             const { token, userId } = response.data;
-            if (token) {
-                // Store the token in localStorage
+            if (token && userId) {
+                // Store the token and userId in localStorage
                 localStorage.setItem("authToken", token);
-                console.log("Token saved:", token);
-    
-                // Redirect after the token is saved
+                localStorage.setItem("userId", userId);
+                console.log("Token and User ID saved:", token, userId);
+
+                // Redirect after storing the token and userId
                 navigate(`/home?userId=${userId}`);
             } else {
                 setMessage("No token received from the server.");
