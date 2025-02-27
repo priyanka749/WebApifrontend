@@ -1,90 +1,62 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
+import "../index.css";
+import Navbar from "./navbar";
 
-const plumbers = [
-  {
-    id: 1,
-    name: "John Doe",
-    photo: "https://via.placeholder.com/100",
-    experience: "10+ yrs",
-    specialty: "Leak Detection, Pipe Repair",
-    reviews: 25,
-    rate: 50,
-  },
-  {
-    id: 2,
-    name: "Jane Smith",
-    photo: "https://via.placeholder.com/100",
-    experience: "8 yrs",
-    specialty: "Water Heater Installation, Drain Cleaning",
-    reviews: 18,
-    rate: 45,
-  },
-  {
-    id: 3,
-    name: "Alex Johnson",
-    photo: "https://via.placeholder.com/100",
-    experience: "12 yrs",
-    specialty: "Sewer Repair, Maintenance",
-    reviews: 30,
-    rate: 60,
-  },
-  {
-    id: 4,
-    name: "Emily Brown",
-    photo: "https://via.placeholder.com/100",
-    experience: "5 yrs",
-    specialty: "Eco-Friendly Plumbing, Pipe Replacement",
-    reviews: 10,
-    rate: 40,
-  },
-  {
-    id: 5,
-    name: "Michael Green",
-    photo: "https://via.placeholder.com/100",
-    experience: "15 yrs",
-    specialty: "Leak Detection, Installation",
-    reviews: 35,
-    rate: 70,
-  },
-];
+const AboutPage = () => {
+  const navigate = useNavigate();
 
-const PlumberList = () => {
   return (
-    <div className="max-w-6xl mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-6 text-center">Available Plumbers</h1>
-      <div className="space-y-4">
-        {plumbers.map((plumber) => (
-          <div
-            key={plumber.id}
-            className="flex items-center bg-white shadow-md rounded-lg p-4 hover:shadow-lg transition-shadow"
-          >
-            <img
-              src={plumber.photo}
-              alt={plumber.name}
-              className="w-20 h-20 rounded-full object-cover mr-4"
-            />
-            <div className="flex-1">
-              <h2 className="text-lg font-semibold text-red-600">{plumber.name}</h2>
-              <p className="text-gray-600">Experience: {plumber.experience}</p>
-              <p className="text-gray-600">Specialty: {plumber.specialty}</p>
-              <p className="text-gray-600">Reviews: {plumber.reviews}</p>
-            </div>
-            <div className="text-right">
-              <p className="text-green-600 text-xl font-bold">${plumber.rate} <span className="text-sm">per hour</span></p>
-              <div className="mt-2 flex space-x-2">
-                <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition">
-                  Send Request
-                </button>
-                <button className="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-300 transition">
-                  View Details
-                </button>
-              </div>
+    <>
+      <Navbar />
+
+      {/* About Section */}
+      <section className="py-16 bg-gray-100 flex items-center justify-center min-h-screen relative">
+        <div className="absolute inset-0 bg-cover bg-center filter blur-lg" style={{ backgroundImage: 'url(src/assets/image/about-us.png)' }}></div>
+        <div className="relative bg-white rounded-lg shadow-lg p-12 flex flex-col md:flex-row items-center max-w-6xl mx-auto">
+          <div className="md:w-3/5 text-left">
+            <h1 className="text-6xl font-bold text-[#1F4A9B] mb-6">About SkillSeek</h1>
+            <p className="text-lg text-gray-700 mb-6">
+              SkillSeek is your premier platform for connecting with skilled professionals across multiple services. 
+              Whether you need home repairs, creative services, or specialized expertise, SkillSeek ensures a seamless, 
+              efficient, and reliable booking experience.
+            </p>
+            <p className="text-lg text-gray-700 mb-8">
+              Our mission is to bridge the gap between users and top-tier service providers by making professional services 
+              accessible with just a few clicks. We strive for quality, trust, and efficiency in every connection made through SkillSeek.
+            </p>
+            <div className="flex space-x-6">
+              <a href="#" className="text-[#1F4A9B] text-lg font-semibold hover:underline">Instagram</a>
+              <a href="#" className="text-[#1F4A9B] text-lg font-semibold hover:underline">Facebook</a>
             </div>
           </div>
-        ))}
-      </div>
-    </div>
+          <div className="md:w-2/5 flex justify-center mt-6 md:mt-0">
+            <img
+              src="src\assets\image\skillseeklogo.png"
+              alt="SkillSeek Logo"
+              className="w-72 h-72 object-contain rounded-lg shadow-lg"
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="bg-[#1F4A9B] text-white py-10">
+        <div className="container mx-auto flex flex-col md:flex-row justify-between items-center px-8">
+          <div className="text-center md:text-left mb-6 md:mb-0">
+            <h3 className="font-bold text-xl">SkillSeek</h3>
+            <p className="text-gray-200 text-md">Your trusted platform for convenient, reliable services.</p>
+          </div>
+          <div className="text-center md:text-right">
+            <ul className="space-y-2 text-lg">
+              <li><a href="#" className="hover:underline">Our Services</a></li>
+              <li><a href="#" className="hover:underline">FAQ</a></li>
+            </ul>
+          </div>
+        </div>
+      </footer>
+    </>
   );
 };
 
-export default PlumberList;
+export default AboutPage;
