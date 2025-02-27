@@ -1,10 +1,27 @@
-import React from "react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "../index.css";
 import Navbar from "./navbar";
 
 const HomePage = () => {
-  const navigate = useNavigate(); // Initialize navigate
+  const navigate = useNavigate();
+  const [services, setServices] = useState([]);
+  const [showMore, setShowMore] = useState(false);
+
+  useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        console.log("Fetching services...");
+        const response = await axios.get("http://localhost:3000/api/services");
+        setServices(response.data.map((service, index) => ({ ...service, id: service.id || index })));
+      } catch (error) {
+        console.error("Error fetching services:", error);
+      }
+    };
+
+    fetchServices();
+  }, []);
 
   return (
     <>
@@ -44,71 +61,42 @@ const HomePage = () => {
           <h2 className="text-2xl md:text-3xl font-bold text-[#1F4A9B] mb-8">Find Services</h2>
 
           {/* Services Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              { name: "Plumber", image: "src/assets/image/om54m6zx.bmp",  description: "Expert plumbing services for your home and office." },
-              { name: "Painter", image: "src/assets/image/wagke2a5.bmp", description: "High-quality painting services for a fresh look." },
-              { name: "Carpenter", image: "src/assets/image/2xizyjeo.bmp", description: "Custom woodwork and carpentry solutions." },
-              { name: "Cook", image: "src/assets/image/4p8r98ea.bmp", description: "Professional cooking services for events and daily needs." },
-              { name: "Electrician", image: "src/assets/image/2jfm1job.bmp", description: "Reliable electrical services for all your needs." },
-              { name: "Cleaner", image: "src/assets/image/mymaxb2f.bmp", description: "Top-notch cleaning services for homes and offices." },
-              { name: "Driver", image: "src/assets/image/7yx2yawu.bmp",  description: "Professional driving services for all your needs." }
-            ].map((service) => (
-              <div
-                key={service.name}
-                className="flex flex-col items-center p-4 md:p-6 bg-white rounded-lg shadow-lg transition-transform transform hover:scale-105 hover:shadow-2xl"
-              >
-                <div className="bg-[#1F4A9B] w-40 h-40 md:w-52 md:h-52 rounded-lg overflow-hidden flex items-center justify-center mb-4">
-                  <img src={service.image} alt={`${service.name} icon`} className="w-full h-full object-cover" />
-                </div>
-                <h3 className="text-lg md:text-xl font-bold text-gray-800 mb-2">{service.name}</h3>
-                <p className="text-gray-600 mb-4 text-sm md:text-base">{service.description}</p>
-                <div className="flex items-center space-x-1 mb-2">
-                  <span className="text-yellow-500 text-lg"></span>
-                  <span className="text-gray-800 font-semibold">{service.rating}</span>
-                </div>
-                <button
-                  className="px-4 py-2 bg-[#1F4A9B] text-white rounded-full font-medium transition-transform transform hover:scale-105"
-                  onClick={() => navigate("/service-detail")}
-                >
-                  View More
-                </button>
-              </div>
-            ))}
-          </div>
+          {/* Services Grid */}
+<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+  {services.slice(0, showMore ? services.length : 4).map((service) => (
+    <div
+      key={service.id}
+      className="flex flex-col items-center p-6 bg-white rounded-lg shadow-lg hover:shadow-2xl transition-transform transform hover:scale-105 max-w-sm mx-auto"
+    >
+      <div className="w-56 h-56 rounded-lg overflow-hidden mb-4">
+        <img
+          src={`http://localhost:3000${service.image}`}
+          alt={service.name}
+          className="w-full h-full object-cover"
+        />
+      </div>
+      <h3 className="text-xl font-bold text-gray-900 mb-2">{service.name}</h3>
+      <p className="text-gray-700 mb-4 text-center">{service.description}</p>
+      <button
+        className="px-6 py-2 bg-[#1F4A9B] text-white rounded-full font-semibold transition-transform transform hover:scale-105"
+        onClick={() => navigate("/service-detail")}
+      >
+        View More
+      </button>
+    </div>
+  ))}
+</div>
 
           {/* See More Button */}
           <div className="mt-6">
             <button
               id="seeMoreBtn"
               className="px-6 py-3 bg-[#1F4A9B] text-white rounded-full font-bold shadow-lg hover:-translate-y-1 hover:shadow-xl transition-transform"
-              onClick={() => {
-                document.querySelectorAll(".more-services").forEach((el) => el.classList.toggle("hidden"));
-                const btn = document.getElementById("seeMoreBtn");
-                btn.innerText = btn.innerText === "See More" ? "See Less" : "See More";
-              }}
+              onClick={() => setShowMore(!showMore)}
             >
-              See More
+              {showMore ? "See Less" : "See More"}
             </button>
           </div>
-        </div>
-      </section>
-
-      {/* Testimonials Section */}
-      <section className="bg-gray-50 py-12">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-700 mb-6">What Our Customers Say About Us</h2>
-          <blockquote className="bg-white rounded-lg shadow-md p-6 mx-auto max-w-2xl">
-            <p className="text-gray-600 italic mb-4">"The professionals listed are trustworthy and skilled. The reviews really help in choosing the right person."</p>
-            <div className="flex items-center justify-center space-x-2">
-              <img
-                src="https://via.placeholder.com/40"
-                alt="Customer"
-                className="w-10 h-10 rounded-full"
-              />
-              <span className="text-gray-700 font-medium">Customer Feedback</span>
-            </div>
-          </blockquote>
         </div>
       </section>
 
