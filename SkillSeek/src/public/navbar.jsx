@@ -1,121 +1,92 @@
-import { Menu, X } from "lucide-react";
+import axios from "axios";
+import { Bell, LogOut, Menu, User, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [userId, setUserId] = useState(null);
+  const [profileImage, setProfileImage] = useState(null);
   const navigate = useNavigate();
   
   useEffect(() => {
-      // Retrieve userId from localStorage
       const id = localStorage.getItem("userId");
       if (id) {
           setUserId(id);
-          console.log("User ID from localStorage:", id);
+          fetchProfileImage(id);
       }
   }, []);
+  const fetchProfileImage = async (userId) => {
+    try {
+        const response = await axios.get(`http://localhost:3000/api/customers/profile/${userId}`, {
+            headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` },
+        });
+
+        if (response.data && response.data.profileImage) {
+            let imageUrl = `http://localhost:3000${response.data.profileImage}`;
+            imageUrl = imageUrl.replace(/\/?uploads\//, "/uploads/"); // ✅ Ensure correct URL formatting
+            console.log("✅ Fetched Image URL:", imageUrl);
+            setProfileImage(imageUrl);
+        } else {
+            setProfileImage(null); // Fallback if no profile image
+        }
+    } catch (error) {
+        console.error("❌ Error fetching profile image:", error);
+    }
+};
+
+  const handleSignOut = () => {
+    localStorage.removeItem("userId");
+    setUserId(null);
+    navigate("/home");
+  };
+  
+  return (
+    <nav className="bg-white shadow-xl rounded-full p-6 h-20 flex items-center justify-between font-bold">
+      <a onClick={() => navigate("/home")} className="flex items-center space-x-4 cursor-pointer pl-8">
+        <img src="/src/assets/image/skillseeklogo.png" className="h-20" alt="SkillSeek Logo" />
+      </a>
+      <div className="flex space-x-8">
+        <a onClick={() => navigate("/home")} className="py-3 px-5 rounded-full text-gray-900 hover:bg-blue-100 cursor-pointer">Home</a>
+        <a onClick={() => navigate("/service")} className="py-3 px-5 rounded-full text-gray-900 hover:bg-blue-100 cursor-pointer">Service</a>
+        <a onClick={() => navigate("/about")} className="py-3 px-5 rounded-full text-gray-900 hover:bg-blue-100 cursor-pointer">About</a>
+      </div>
+      <div className="flex items-center space-x-6">
+        <button className="p-3 bg-gray-200 rounded-full hover:bg-gray-300 shadow-md">
+          <Bell className="w-7 h-7 text-gray-600" />
+        </button>
+        {userId ? (
+          <div className="relative">
+           <button onClick={() => setIsDropdownOpen(!isDropdownOpen)} className="flex items-center space-x-2 bg-gray-200 p-3 rounded-full hover:bg-gray-300 shadow-md">
+  {profileImage ? (
+    <img src={profileImage} alt="Profile" className="w-10 h-10 rounded-full object-cover" />
+  ) : (
+    <User className="w-9 h-9 text-blue-600" />
+  )}
   
 
-  return (
-    <nav className="bg-white border-gray-200 dark:bg-gray-900">
-  <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-    <a href="/home" className="flex items-center space-x-3">
-      <img
-        src="/assets/images/skillseeklogo.png"  // Your custom logo path
-        className="h-8"
-        
-      />
-          <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
-           
-          </span>
-        </a>
-        <div className="flex items-center md:order-2 space-x-3">
-          <button
-            type="button"
-            className="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
-            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-          >
-            <img
-              className="w-8 h-8 rounded-full"
-              src="/docs/images/people/profile-picture-3.jpg"
-              alt="User Photo"
-            />
-          </button>
-          {isDropdownOpen && (
-            <div className="absolute right-4 mt-4 w-48 bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600">
-              <div className="px-4 py-3">
-                <span className="block text-sm text-gray-900 dark:text-white">Bonnie Green</span>
-                <span className="block text-sm text-gray-500 truncate dark:text-gray-400">
-                  name@flowbite.com
-                </span>
+            </button>
+            {isDropdownOpen && (
+              <div className="absolute right-0 mt-3 w-52 bg-white shadow-lg rounded-lg">
+                <button onClick={() => navigate(`/userprofile/${userId}`)} className="flex items-center px-5 py-3 text-gray-900 hover:bg-gray-100 w-full text-left">
+                  <User className="w-5 h-5 mr-3 text-blue-600" /> Profile
+                </button>
+                <button onClick={handleSignOut} className="flex items-center px-5 py-3 text-gray-900 hover:bg-gray-100 w-full text-left">
+                  <LogOut className="w-5 h-5 mr-3" /> Sign out
+                </button>
               </div>
-              <ul className="py-2">
-                <li>
-                  <button
-                    onClick={() => navigate(`/userprofile/${userId}`)}
-                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200"
-                  >
-                    Dashboard
-                  </button>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200"
-                  >
-                    Settings
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200"
-                  >
-                    Earnings
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200"
-                  >
-                    Sign out
-                  </a>
-                </li>
-              </ul>
-            </div>
-          )}
-          <button
-            className="md:hidden p-2 text-gray-500 rounded-lg hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-          >
-            {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
-        </div>
-        <div
-          className={`items-center justify-between w-full md:flex md:w-auto md:order-1 ${
-            isMenuOpen ? "block" : "hidden"
-          }`}
-        >
-          <ul className="flex flex-col font-medium p-4 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
-            <li>
-              <a href="#" className="block py-2 px-3 text-blue-700">Home</a>
-            </li>
-            <li>
-              <a href="#" className="block py-2 px-3 text-gray-900 dark:text-white">About</a>
-            </li>
-            <li>
-              <a href="#" className="block py-2 px-3 text-gray-900 dark:text-white">Services</a>
-            </li>
-            <li>
-              <a href="#" className="block py-2 px-3 text-gray-900 dark:text-white">Pricing</a>
-            </li>
-            <li>
-              <a href="#" className="block py-2 px-3 text-gray-900 dark:text-white">Contact</a>
-            </li>
-          </ul>
-        </div>
+            )}
+          </div>
+        ) : (
+          <div className="flex space-x-6">
+            <button onClick={() => navigate("/login")} className="py-3 px-6 bg-[#1F4A9B] text-white rounded-full hover:bg-blue-700 shadow-lg">Login</button>
+            <button onClick={() => navigate("/signup")} className="py-3 px-6 bg-[#1F4A9B] text-white rounded-full hover:bg-blue-700 shadow-lg">Signup</button>
+          </div>
+        )}
+        <button className="md:hidden p-3 text-gray-500 rounded-lg hover:bg-gray-100 shadow-md" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+          {isMenuOpen ? <X className="w-7 h-7" /> : <Menu className="w-7 h-7" />}
+        </button>
       </div>
     </nav>
   );
