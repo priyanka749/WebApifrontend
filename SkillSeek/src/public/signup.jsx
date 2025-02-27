@@ -176,7 +176,6 @@
 // };
 
 // export default Signup;
-
 import axios from "axios";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -189,7 +188,7 @@ const Signup = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    phone_number: "", // Added for phone number
+    phone_number: "", 
     password: "",
     location: "",
     bio: "",
@@ -211,7 +210,7 @@ const Signup = () => {
     const formDataToSend = new FormData();
     Object.keys(formData).forEach((key) => formDataToSend.append(key, formData[key]));
     if (profileImage) {
-      formDataToSend.append("profileImage", profileImage);  // Profile image field should match backend multer setup
+      formDataToSend.append("profileImage", profileImage);
     }
     formDataToSend.append("role", role);
   
@@ -256,103 +255,26 @@ const Signup = () => {
         </div>
 
         <form className="space-y-6" onSubmit={handleSubmit}>
-          <div className="space-y-1">
-            <input
-              type="text"
-              name="name"
-              placeholder="Enter your full name"
-              className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1F4A9B] placeholder-gray-600"
-              onChange={handleChange}
-              required
-            />
-          </div>
-
-          <div className="space-y-1">
-            <input
-              type="email"
-              name="email"
-              placeholder="Enter your email"
-              className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1F4A9B] placeholder-gray-600"
-              onChange={handleChange}
-              required
-            />
-          </div>
-
-          <div className="space-y-1">
-            <input
-              type="text"
-              name="phone_number"
-              placeholder="Enter your phone number"
-              className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1F4A9B] placeholder-gray-600"
-              onChange={handleChange}
-              required
-            />
-          </div>
-
-          <div className="space-y-1">
-            <input
-              type="password"
-              name="password"
-              placeholder="Enter your password"
-              className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1F4A9B] placeholder-gray-600"
-              onChange={handleChange}
-              required
-            />
-          </div>
-
-          <div className="space-y-1">
-            <input
-              type="text"
-              name="location"
-              placeholder="Enter your location"
-              className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1F4A9B] placeholder-gray-600"
-              onChange={handleChange}
-              required
-            />
-          </div>
-
+          <input type="text" name="name" placeholder="Enter your full name" className="w-full px-4 py-3 border rounded-lg" onChange={handleChange} required />
+          <input type="email" name="email" placeholder="Enter your email" className="w-full px-4 py-3 border rounded-lg" onChange={handleChange} required />
+          <input type="text" name="phone_number" placeholder="Enter your phone number" className="w-full px-4 py-3 border rounded-lg" onChange={handleChange} required />
+          <input type="password" name="password" placeholder="Enter your password" className="w-full px-4 py-3 border rounded-lg" onChange={handleChange} required />
+          <input type="text" name="location" placeholder="Enter your location" className="w-full px-4 py-3 border rounded-lg" onChange={handleChange} required />
           {role === "Service Provider" && (
             <>
-              <div className="space-y-1">
-                <input
-                  type="text"
-                  name="skills"
-                  placeholder="Your skill (e.g., Plumber, Electrician)"
-                  className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1F4A9B] placeholder-gray-600"
-                  onChange={handleChange}
-                />
-              </div>
-
-              <div className="space-y-1">
-                <textarea
-                  name="bio"
-                  placeholder="Tell us about yourself"
-                  className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1F4A9B] placeholder-gray-600"
-                  rows="4"
-                  onChange={handleChange}
-                ></textarea>
-              </div>
+              <input type="text" name="skills" placeholder="Your skill (e.g., Plumber, Electrician)" className="w-full px-4 py-3 border rounded-lg" onChange={handleChange} />
+              <textarea name="bio" placeholder="Tell us about yourself" className="w-full px-4 py-3 border rounded-lg" rows="4" onChange={handleChange}></textarea>
             </>
           )}
-
-{/* <div className="space-y-1">
-  <label className="block text-sm font-medium text-gray-700">Profile Image (optional)</label>
-  <input 
-    type="file" 
-    name="profileImage"  // Add the 'name' attribute matching what Multer expects
-    onChange={handleImageChange} 
-  />
-</div> */}
-
-          <button
-            type="submit"
-            className="w-full py-4 text-lg font-bold text-white bg-[#1F4A9B] rounded-lg hover:bg-[#163870] transition-all shadow-lg"
-          >
-            Sign Up as {role}
-          </button>
+          <button type="submit" className="w-full py-4 text-lg font-bold text-white bg-[#1F4A9B] rounded-lg hover:bg-[#163870]">Sign Up as {role}</button>
         </form>
 
         {message && <p className="mt-4 text-center text-red-500">{message}</p>}
+
+        <p className="mt-6 text-center text-gray-600">
+          Already have an account? 
+          <button onClick={() => navigate("/login")} className="text-[#1F4A9B] font-semibold hover:underline"> Login </button>
+        </p>
       </div>
     </div>
   );
