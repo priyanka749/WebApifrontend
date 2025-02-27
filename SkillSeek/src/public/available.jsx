@@ -1,151 +1,275 @@
-import React, { useState } from "react";
-import { FaRegStar, FaStar, FaStarHalfAlt } from "react-icons/fa";
+// import axios from "axios";
+// import React, { useEffect, useState } from "react";
+// import { FaUserCircle } from "react-icons/fa"; // ✅ Import user icon
+// import { useNavigate } from "react-router-dom";
+// import Navbar from "./navbar";
+
+// const ServiceProviders = () => {
+//   const [providers, setProviders] = useState([]);
+//   const [searchTerm, setSearchTerm] = useState("");
+//   const navigate = useNavigate();
+
+//   // ✅ Fetch all service providers
+//   useEffect(() => {
+//     const fetchProviders = async () => {
+//       try {
+//         console.log("Fetching providers...");
+//         const response = await axios.get("http://localhost:3000/api/provider");
+//         console.log("Providers fetched:", response.data);
+//         setProviders(response.data.providers);
+//       } catch (error) {
+//         console.error("Error fetching providers:", error);
+//       }
+//     };
+
+//     fetchProviders();
+//   }, []);
+
+//   // ✅ Filter providers based on search
+//   const filteredProviders = providers.filter((provider) =>
+//     provider.skills.some((skill) =>
+//       skill.toLowerCase().includes(searchTerm.toLowerCase())
+//     )
+//   );
+
+//   return (
+//     <div className="bg-gray-100 min-h-screen">
+//       <Navbar />
+//       <div className="container mx-auto px-6 py-10">
+//         <h2 className="text-4xl font-bold text-center text-[#1F4A9B] mb-6">
+//           Available Service Providers
+//         </h2>
+
+//         {/* Search Bar */}
+//         <div className="w-full flex justify-center mb-6">
+//           <input
+//             type="text"
+//             placeholder="Search by specialty (e.g., Plumber, Electrician, Painter)"
+//             value={searchTerm}
+//             onChange={(e) => setSearchTerm(e.target.value)}
+//             className="w-full max-w-3xl border border-[#1F4A9B] rounded-lg p-4 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#1F4A9B] h-14"
+//           />
+//         </div>
+
+//         {/* Service Provider List */}
+//         {filteredProviders.length === 0 ? (
+//           <p className="text-center text-gray-600">No providers found.</p>
+//         ) : (
+//           <div className="space-y-6">
+//             {filteredProviders.map((provider) => (
+//               <div
+//                 key={provider.id}
+//                 className="bg-white rounded-xl border border-[#1F4A9B] shadow-md p-6 flex flex-col md:flex-row items-center justify-between"
+//               >
+//                 {/* Provider Details */}
+//                 <div className="flex items-center space-x-6">
+//                   {/* Profile Image with Icon */}
+//                   <div className="relative w-20 h-20 md:w-24 md:h-24 rounded-full overflow-hidden border-2 border-[#1F4A9B]">
+//                     {provider.profileImage ? (
+//                       <img
+//                         src={provider.profileImage}
+//                         alt={provider.name}
+//                         className="w-full h-full object-cover"
+//                       />
+//                     ) : (
+//                       <FaUserCircle className="text-gray-400 w-full h-full" />
+//                     )}
+//                   </div>
+
+//                   {/* Provider Info */}
+//                   <div>
+//                     <h3 className="text-xl font-bold text-[#1F4A9B]">{provider.name}</h3>
+//                     <p className="text-gray-700">
+//                       <strong>Email:</strong> {provider.email}
+//                     </p>
+//                     <p className="text-gray-700">
+//                       <strong>Phone:</strong> {provider.phoneNumber}
+//                     </p>
+//                     <p className="text-gray-700">
+//                       <strong>Bio:</strong> {provider.bio}
+//                     </p>
+//                     <p className="text-gray-700">
+//                       <strong>Skills:</strong> {provider.skills.join(", ")}
+//                     </p>
+//                   </div>
+//                 </div>
+
+//                 {/* Buttons */}
+//                 <div className="flex space-x-3 mt-4 md:mt-0">
+//                   <button className="bg-green-500 text-white px-5 py-2 rounded-lg font-medium hover:bg-green-600 transition duration-300">
+//                     Send Request
+//                   </button>
+//                   <button
+//                     onClick={() => navigate(`/provider-detail/${provider.id}`)}
+//                     className="bg-[#1F4A9B] text-white px-5 py-2 rounded-lg font-medium hover:bg-blue-800 transition duration-300"
+//                   >
+//                     View Details
+//                   </button>
+//                 </div>
+//               </div>
+//             ))}
+//           </div>
+//         )}
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default ServiceProviders;
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { FaUserCircle } from "react-icons/fa"; // ✅ Import user icon
+import { useNavigate } from "react-router-dom";
 import Navbar from "./navbar";
 
-const plumbers = [
-  {
-    id: 1,
-    name: "John Doe",
-    photo: "https://img.freepik.com/free-photo/young-bearded-man-with-white-t-shirt_273609-7187.jpg",
-    experience: "10+ yrs",
-    specialty: "Leak Detection, Pipe Repair",
-    reviews: 25,
-    rating: 4.5,
-  },
-  {
-    id: 2,
-    name: "Jane Smith",
-    photo: "https://www.shutterstock.com/image-photo/head-shot-portrait-close-smiling-600nw-1714666150.jpg",
-    experience: "8 yrs",
-    specialty: "Water Heater Installation, Drain Cleaning",
-    reviews: 18,
-    rating: 4.0,
-  },
-  // Add more plumber objects as needed
-];
+const ServiceProviders = ({ userId }) => {
+  const [providers, setProviders] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const navigate = useNavigate();
 
-const renderRating = (rating) => {
-  const fullStars = Math.floor(rating);
-  const halfStar = rating - fullStars >= 0.5;
-  const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+  // ✅ Fetch all service providers
+  useEffect(() => {
+    const fetchProviders = async () => {
+      try {
+        console.log("Fetching providers...");
+        const response = await axios.get("http://localhost:3000/api/provider");
+        console.log("Providers fetched:", response.data);
+        setProviders(response.data.providers);
+      } catch (error) {
+        console.error("Error fetching providers:", error);
+      }
+    };
 
-  return (
-    <div className="flex items-center text-yellow-500">
-      {Array(fullStars)
-        .fill()
-        .map((_, index) => (
-          <FaStar key={index} />
-        ))}
-      {halfStar && <FaStarHalfAlt />}
-      {Array(emptyStars)
-        .fill()
-        .map((_, index) => (
-          <FaRegStar key={index} />
-        ))}
-    </div>
+    fetchProviders();
+  }, []);
+
+  // ✅ Filter providers based on search
+  const filteredProviders = providers.filter((provider) =>
+    provider.skills.some((skill) =>
+      skill.toLowerCase().includes(searchTerm.toLowerCase())
+    )
   );
+
+  // ✅ Function to send a service request
+  const sendRequest = async (providerUserId) => {
+    try {
+      const serviceTitle = prompt("Enter service title:");
+      const message = prompt("Enter message for the provider:");
+
+      if (!serviceTitle || !message) return alert("Service Title & Message are required!");
+
+      const token = localStorage.getItem("authToken"); // ✅ Retrieve token from local storage
+
+      if (!token) {
+        return alert("You must be logged in to send a request.");
+      }
+
+      const response = await axios.post(
+        "http://localhost:3000/api/requests/send",
+        {
+          providerUserId,
+          serviceTitle,
+          message,
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` }, // ✅ Include token in headers
+          withCredentials: true, // ✅ Ensures authentication if using cookies/sessions
+        }
+      );
+
+      alert(response.data.message); // ✅ Show success message
+    } catch (error) {
+      console.error("Error sending request:", error.response?.data || error.message);
+      alert(error.response?.data?.error || "Failed to send request.");
+    }
 };
 
-const PlumberList = () => {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [message, setMessage] = useState("");
 
-  const filteredPlumbers = plumbers.filter((plumber) =>
-    plumber.specialty.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
-  const handleSendRequest = async (providerId) => {
-    try {
-      const response = await fetch("http://localhost:3000/api/requests", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          customerId: "customer_id_here",  // Replace with actual logged-in customer ID
-          providerId: providerId,
-          serviceDetails: "Plumbing Repair",  // Modify as needed
-        }),
-      });
-  
-      if (response.ok) {
-        alert("Request sent successfully!");
-      } else {
-        const errorData = await response.json();
-        alert(`Failed to send request: ${errorData.message}`);
-      }
-    } catch (error) {
-      console.error("Error sending request:", error);
-      alert("Failed to send request. Please try again.");
-    }
-  };
   return (
-    <div>
+    <div className="bg-gray-100 min-h-screen">
       <Navbar />
-      <div className="max-w-8xl mx-auto px-20 py-8 font-semibold">
-        <h1 className="text-5xl font-bold text-[#1F4A9B] mb-8 text-center">Available Plumbers</h1>
+      <div className="container mx-auto px-6 py-10">
+        <h2 className="text-4xl font-bold text-center text-[#1F4A9B] mb-6">
+          Available Service Providers
+        </h2>
 
-        <div className="mb-8">
+        {/* Search Bar */}
+        <div className="w-full flex justify-center mb-6">
           <input
             type="text"
-            placeholder="Search by specialty (e.g., Leak Detection, Installation)"
-            className="w-full p-4 border border-[#1F4A9B] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1F4A9B] text-lg"
+            placeholder="Search by specialty (e.g., Plumber, Electrician, Painter)"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full max-w-3xl border border-[#1F4A9B] rounded-lg p-4 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#1F4A9B] h-14"
           />
         </div>
 
-        {message && (
-          <div className="mb-6 p-4 text-center bg-green-100 text-green-700 rounded-lg">{message}</div>
-        )}
-
-        <div className="space-y-8">
-          {filteredPlumbers.length > 0 ? (
-            filteredPlumbers.map((plumber) => (
+        {/* Service Provider List */}
+        {filteredProviders.length === 0 ? (
+          <p className="text-center text-gray-600">No providers found.</p>
+        ) : (
+          <div className="space-y-6">
+            {filteredProviders.map((provider) => (
               <div
-                key={plumber.id}
-                className="flex items-center bg-white shadow-md rounded-lg p-6 hover:shadow-lg transition-shadow"
+                key={provider.id}
+                className="bg-white rounded-xl border border-[#1F4A9B] shadow-md p-6 flex flex-col md:flex-row items-center justify-between"
               >
-                <img
-                  src={plumber.photo}
-                  alt={plumber.name}
-                  className="w-28 h-28 rounded-full object-cover mr-8 border-4 border-[#1F4A9B]"
-                />
-                <div className="flex-1">
-                  <h2 className="text-2xl font-bold text-[#1F4A9B]">{plumber.name}</h2>
-                  <div className="mt-1">{renderRating(plumber.rating)}</div>
-                  <p className="text-gray-700 font-bold mt-2">
-                    <span className="font-semibold">Experience:</span> {plumber.experience}
-                  </p>
-                  <p className="text-gray-700">
-                    <span className="font-semibold">Specialty:</span> {plumber.specialty}
-                  </p>
-                  <p className="text-gray-700">
-                    <span className="font-semibold">Reviews:</span> {plumber.reviews}
-                  </p>
-                </div>
-                <div className="text-right">
-                  <div className="mt-3 flex space-x-3">
-                    <button
-                      className="bg-green-500 text-white px-5 py-2 rounded-lg hover:bg-green-600 transition"
-                      onClick={() => handleSendRequest(plumber)}
-                    >
-                      Send Request
-                    </button>
-                    <button className="bg-[#1F4A9B] text-white px-5 py-2 rounded-lg hover:bg-gray-300 transition">
-                      View Details
-                    </button>
+                {/* Provider Details */}
+                <div className="flex items-center space-x-6">
+                  {/* Profile Image with Icon */}
+                  <div className="relative w-20 h-20 md:w-24 md:h-24 rounded-full overflow-hidden border-2 border-[#1F4A9B]">
+                    {provider.profileImage ? (
+                      <img
+                        src={provider.profileImage}
+                        alt={provider.name}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <FaUserCircle className="text-gray-400 w-full h-full" />
+                    )}
+                  </div>
+
+                  {/* Provider Info */}
+                  <div>
+                    <h3 className="text-xl font-bold text-[#1F4A9B]">{provider.name}</h3>
+                    <p className="text-gray-700">
+                      <strong>Email:</strong> {provider.email}
+                    </p>
+                    <p className="text-gray-700">
+                      <strong>Phone:</strong> {provider.phoneNumber}
+                    </p>
+                    <p className="text-gray-700">
+                      <strong>Bio:</strong> {provider.bio}
+                    </p>
+                    <p className="text-gray-700">
+                      <strong>Skills:</strong> {provider.skills.join(", ")}
+                    </p>
                   </div>
                 </div>
+
+                {/* Buttons */}
+                <div className="flex space-x-3 mt-4 md:mt-0">
+                  <button
+                    onClick={() => sendRequest(provider.id)} // ✅ Send request to this provider
+                    className="bg-green-500 text-white px-5 py-2 rounded-lg font-medium hover:bg-green-600 transition duration-300"
+                  >
+                    Send Request
+                  </button>
+                  <button
+                    onClick={() => navigate(`/provider-detail/${provider.id}`)}
+                    className="bg-[#1F4A9B] text-white px-5 py-2 rounded-lg font-medium hover:bg-blue-800 transition duration-300"
+                  >
+                    View Details
+                  </button>
+                </div>
               </div>
-            ))
-          ) : (
-            <p className="text-center text-gray-600 text-lg">No plumbers found for this search.</p>
-          )}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
 };
 
-export default PlumberList;
+export default ServiceProviders;
+
