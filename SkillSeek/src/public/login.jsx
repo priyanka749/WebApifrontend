@@ -4,65 +4,13 @@ import { useNavigate } from "react-router-dom";
 import illustration from "../assets/image/home-cleaning-services-500x500 1.png"; // Adjust path
 import logo from "../assets/image/skillseeklogo.png"; // Adjust path
 
-// const Login = () => {
-//     const navigate = useNavigate();
-//     const [formData, setFormData] = useState({
-//         email: "",
-//         password: "",
-//     });
-//     const [message, setMessage] = useState("");
-//     const [isLoading, setIsLoading] = useState(false);
 
-    // const handleChange = (e) => {
-    //     setFormData({ ...formData, [e.target.name]: e.target.value });
-    // };
-
-    // const handleSubmit = async (e) => {
-    //     e.preventDefault();
-    //     setIsLoading(true);
-    //     setMessage(""); // Reset previous messages
-
-    //     try {
-    //         const response = await axios.post("http://localhost:3000/api/auth/login", formData);
-
-    //         if (response.status === 200 && response.data) {
-    //             console.log("Login Response:", response.data);
-
-    //             const { user, token, userId } = response.data; // Extract required values
-
-    //             if (!userId || !user || !token) {
-    //                 throw new Error("Invalid response from server");
-    //             }
-
-    //             // ✅ Store user details properly
-    //             localStorage.setItem("user", JSON.stringify(user));
-               
-
-    //             setMessage(response.data.message);
-
-    //             // ✅ Navigate only after data is stored
-    //             setTimeout(() => {
-    //                 if (user.role === "Customer") {
-    //                     navigate("/home");
-    //                 } else if (user.role === "Service Provider") {
-    //                     navigate("/dashboard");
-    //                 }
-    //             }, 1000);
-    //         }
-    //     } catch (error) {
-    //         console.error("Login error:", error.response?.data?.message || error.message);
-    //         setMessage(error.response?.data?.message || "Something went wrong. Please try again.");
-    //     } finally {
-    //         setIsLoading(false);
-    //     }
-    // };
-
-  
+import { ToastContainer, toast } from "react-toastify"; // Import Toastify
+import "react-toastify/dist/ReactToastify.css"; // Import Toastify CSS
     
     const Login = () => {
       const [formData, setFormData] = useState({ email: '', password: '' });
       const [isLoading, setIsLoading] = useState(false);
-      const [message, setMessage] = useState('');
       const navigate = useNavigate();
     
       const handleChange = (e) => {
@@ -72,33 +20,32 @@ import logo from "../assets/image/skillseeklogo.png"; // Adjust path
       const handleSubmit = async (e) => {
         e.preventDefault();
         setIsLoading(true);
-        setMessage("");
     
         try {
           const response = await axios.post("http://localhost:3000/api/auth/login", formData);
-    
           const { token, userId, role } = response.data;
+    
           if (token && userId && role) {
-            // Store the token, userId, and role in localStorage
             localStorage.setItem("authToken", token);
             localStorage.setItem("userId", userId);
-            localStorage.setItem("userRole", role); // Store role in localStorage
+            localStorage.setItem("userRole", role);
     
-            console.log("Token, User ID, and Role saved:", token, userId, role);
+            toast.success("Login successful! Redirecting...", { autoClose: 2000 });
     
-            // Redirect based on user role
-            if (role === "Customer") {
-              navigate(`/home?userId=${userId}`);
-            } else if (role === "Service Provider") {
-              navigate(`/servicedash?userId=${userId}`);
-            } else {
-              setMessage("Role not recognized.");
-            }
+            setTimeout(() => {
+              if (role === "Customer") {
+                navigate(`/home?userId=${userId}`);
+              } else if (role === "Service Provider") {
+                navigate(`/servicedash?userId=${userId}`);
+              } else {
+                toast.error("Role not recognized.");
+              }
+            }, 400);
           } else {
-            setMessage("No token received from the server.");
+            toast.error("No token received from the server.");
           }
         } catch (error) {
-          setMessage("Login failed. Invalid credentials.");
+          toast.error("Login failed. Invalid credentials.");
         } finally {
           setIsLoading(false);
         }
@@ -107,6 +54,7 @@ import logo from "../assets/image/skillseeklogo.png"; // Adjust path
       return (
         <div className="flex items-center justify-center py-10 min-h-screen bg-gray-100">
           <div className="w-full max-w-6xl bg-white shadow-xl rounded-3xl overflow-hidden grid grid-cols-1 md:grid-cols-2">
+            
             {/* Left Section - Form */}
             <div className="p-10 flex flex-col justify-center">
               <div className="mb-6">
@@ -121,7 +69,6 @@ import logo from "../assets/image/skillseeklogo.png"; // Adjust path
     
               <form className="space-y-6" onSubmit={handleSubmit}>
                 <div>
-                  <label className="block text-sm font-medium text-gray-900"></label>
                   <input
                     type="email"
                     name="email"
@@ -133,7 +80,6 @@ import logo from "../assets/image/skillseeklogo.png"; // Adjust path
                 </div>
     
                 <div>
-                  <label className="block text-sm font-medium text-gray-900"></label>
                   <div className="relative">
                     <input
                       type="password"
@@ -171,24 +117,22 @@ import logo from "../assets/image/skillseeklogo.png"; // Adjust path
                 </button>
               </form>
     
-              {message && (
-                <p className={`mt-4 text-center ${message.includes("success") ? "text-green-500" : "text-red-500"}`}>
-                  {message}
-                </p>
-              )}
+              <p className="text-center text-gray-900 mt-9">
+                Don’t have an account?{" "}
+                <button onClick={() => navigate("/signup")} className="text-[#1F4A9B] font-bold hover:underline">
+                  Sign Up
+                </button>
+              </p>
+            </div>
     
-    <p className="text-center text-gray-900 mt-9">
-            Don’t have an account?{" "}
-            <button onClick={() => navigate("/signup")} className="text-[#1F4A9B] font-bold hover:underline">
-              Sign Up
-            </button>
-          </p>
-        </div>
             {/* Right Section - Image */}
             <div className="hidden md:flex items-center justify-center bg-gray-50 p-20">
               <img src={illustration} alt="Service Providers Illustration" className="w-86" />
             </div>
           </div>
+    
+          {/* Toastify Container */}
+          <ToastContainer position="top-right" autoClose={200} />
         </div>
       );
     };

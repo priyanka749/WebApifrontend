@@ -102,19 +102,38 @@ const HomePage = () => {
 
       {/* Footer */}
       <footer className="bg-[#1F4A9B] text-white py-8">
-        <div className="container mx-auto flex flex-col md:flex-row justify-between items-center px-6">
-          <div className="text-center md:text-left mb-6 md:mb-0">
-            <h3 className="font-bold text-lg">SkillSeek</h3>
-            <p className="text-gray-200 text-sm">Your trusted platform for convenient, reliable services.</p>
-          </div>
-          <div className="text-center md:text-right">
-            <ul className="space-y-2">
-              <li><a href="#" className="hover:underline">Our Services</a></li>
-              <li><a href="#" className="hover:underline">FAQ</a></li>
-            </ul>
-          </div>
-        </div>
-      </footer>
+  <div className="container mx-auto flex flex-col md:flex-row justify-between items-center px-6">
+    <div className="text-center md:text-left mb-6 md:mb-0">
+      <h3 className="font-bold text-lg">SkillSeek</h3>
+      <p className="text-gray-200 text-sm mt-2">Discover skilled professionals for all your needs.</p>
+    </div>
+    <div className="text-center md:text-right">
+      <ul className="space-y-2">
+        <li><a href="#" className="hover:text-gray-300 hover:underline transition-colors">Our Services</a></li>
+        <li><a href="#" className="hover:text-gray-300 hover:underline transition-colors">FAQ</a></li>
+      </ul>
+    </div>
+  </div>
+  <div className="border-t border-gray-600 mt-4 pt-4">
+    <div className="container mx-auto flex flex-col md:flex-row justify-between items-center px-6">
+      <p className="text-sm text-center md:text-left text-gray-400">© 2025 SkillSeek. All rights reserved.</p>
+      <div className="text-center md:text-right">
+        <ul className="flex space-x-4">
+          <li>
+            <a href="#" className="text-gray-400 hover:text-gray-300 transition-colors">
+              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 1a9 9 0 110 18 9 9 0 010-18zm2.293 6.293a1 1 0 00-1.414 1.414L11 10.414V12a1 1 0 11-2 0v-1.586l-1.293 1.293a1 1 0 11-1.414-1.414l3-3a1 1 0 011.414 0l3 3z"/></svg>
+            </a>
+          </li>
+          <li>
+            <a href="#" className="text-gray-400 hover:text-gray-300 transition-colors">
+              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M15.929 2.929A5 5 0 005.07 13.788L2.829 16.03A1 1 0 012 15.586V12a1 1 0 011-1h3.586a1 1 0 01.707.293l2.242 2.242a5 5 0 007.859-6.16l-2.243-2.242a1 1 0 01-.293-.707V3a1 1 0 01.414-.788l2.242-2.243zM17 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</footer>
     </>
   );
 };

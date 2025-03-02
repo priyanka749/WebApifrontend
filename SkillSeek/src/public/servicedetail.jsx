@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { FaCheckCircle, FaClock, FaFileAlt, FaMapMarkerAlt, FaStar } from "react-icons/fa";
+import { FaCheckCircle, FaClock, FaMapMarkerAlt } from "react-icons/fa";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
 import plumberImage from "../assets/image/om54m6zx.bmp"; // Import plumber image
 
@@ -22,17 +22,8 @@ const ServiceDetail = () => {
             </ul>
           </div>
         );
-      case "documents":
-        return (
-          <div className="text-gray-700">
-            <p>The following documents are required for this service:</p>
-            <ul className="mt-4 space-y-2">
-              <li><FaFileAlt className="inline text-blue-500 mr-2" /> Proof of ownership</li>
-              <li><FaFileAlt className="inline text-blue-500 mr-2" /> Government-issued ID</li>
-              <li><FaFileAlt className="inline text-blue-500 mr-2" /> Service request form</li>
-            </ul>
-          </div>
-        );
+      
+      
       case "cost":
         return (
           <div className="text-gray-700">
@@ -49,7 +40,7 @@ const ServiceDetail = () => {
           <div className="text-gray-700">
             <p>Service available in:</p>
             <ul className="mt-4 space-y-2">
-              <li><FaMapMarkerAlt className="inline text-red-500 mr-2" /> New York City</li>
+              <li><FaMapMarkerAlt className="inline text-red-500 mr-2" />Kathmandu</li>
             </ul>
           </div>
         );
@@ -58,11 +49,6 @@ const ServiceDetail = () => {
     }
   };
 
-  const reviews = [
-    { name: "John Doe", rating: 5, date: "Jan 20, 2025", comment: "Excellent service, highly recommended!" },
-    { name: "Jane Smith", rating: 4, date: "Feb 5, 2025", comment: "Professional and quick response time." },
-    { name: "Michael Lee", rating: 5, date: "Feb 10, 2025", comment: "Great experience! The plumber was very friendly." },
-  ];
 
   return (
     <div className="bg-gray-100 min-h-screen py-6">
@@ -86,7 +72,7 @@ const ServiceDetail = () => {
         <div className="lg:col-span-2 bg-white p-6 rounded-lg shadow-md">
           <div className="border-b border-gray-300 mb-4">
             <nav className="flex flex-wrap space-x-4 overflow-auto">
-              {["description", "documents", "cost", "location"].map((tab) => (
+              {["description", "cost", "location"].map((tab) => (
                 <button
                   key={tab}
                   className={`${
@@ -116,28 +102,9 @@ const ServiceDetail = () => {
         </button>
       </div>
 
-      {/* Review and Rating Section */}
-      <div className="max-w-7xl mx-auto mt-10 bg-white p-6 rounded-lg shadow-md">
-        <h2 className="text-2xl font-bold text-[#1F4A9B] mb-4">Customer Reviews</h2>
-        <div className="space-y-4">
-          {reviews.map((review, index) => (
-            <div key={index} className="bg-gray-50 p-4 rounded-lg shadow-sm border border-gray-200">
-              <div className="flex items-center justify-between mb-1">
-                <div className="flex items-center">
-                  {[...Array(review.rating)].map((_, i) => (
-                    <FaStar key={i} className="text-yellow-500 mr-1 text-sm" />
-                  ))}
-                  <span className="ml-2 text-sm font-medium">{review.name}</span>
-                </div>
-                <span className="text-xs text-gray-500">{review.date}</span>
-              </div>
-              <p className="text-gray-600 text-sm">{review.comment}</p>
-            </div>
-          ))}
-        </div>
-      </div>
+     
     </div>
   );
-};
+}
 
 export default ServiceDetail;
